@@ -42,6 +42,7 @@ Partial Class Form1
         '
         'pbDraw
         '
+        Me.pbDraw.BackColor = System.Drawing.Color.White
         Me.pbDraw.Location = New System.Drawing.Point(13, 31)
         Me.pbDraw.Name = "pbDraw"
         Me.pbDraw.Size = New System.Drawing.Size(521, 281)
