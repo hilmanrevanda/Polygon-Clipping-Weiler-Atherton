@@ -1,6 +1,8 @@
-﻿Imports System.Drawing.Drawing2D
+﻿Imports System.Drawing.Drawing2D 'get smoothing function from here 
 
 Public Class MainWindow
+    Public canvas As Bitmap
+
     ' Each polygon is represented by a List(Of Point).
     Private Polygons As New List(Of List(Of Point))()
 
@@ -53,7 +55,7 @@ Public Class MainWindow
 
         ' Draw the old polygons.
         For Each polygon As List(Of Point) In Polygons
-            e.Graphics.FillPolygon(Brushes.White, polygon.ToArray())
+
             e.Graphics.DrawPolygon(Pens.Blue, polygon.ToArray())
         Next polygon
 
@@ -77,13 +79,17 @@ Public Class MainWindow
     End Sub
 
     Private Sub MainWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-
+        canvas = New Bitmap(picCanvas.Width, picCanvas.Height)
     End Sub
 
     Private Sub picCanvas_Click(sender As Object, e As EventArgs) Handles picCanvas.Click
 
     End Sub
+
+    Private Sub clearcanvas()
+
+    End Sub
+
     Private Sub btnDrawSPolygon_Click(sender As Object, e As EventArgs) Handles btnDrawSPolygon.Click
 
     End Sub
@@ -104,9 +110,7 @@ Public Class MainWindow
 
     End Sub
 
-    Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
 
-    End Sub
 
     Private Sub btnMove_Click(sender As Object, e As EventArgs) Handles btnMove.Click
 
@@ -124,5 +128,7 @@ Public Class MainWindow
         End
     End Sub
 
-
+    Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
+        
+    End Sub
 End Class

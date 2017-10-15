@@ -31,7 +31,6 @@ Partial Class MainWindow
         Me.btnClipPolygon = New System.Windows.Forms.Button()
         Me.btnClipRectangular = New System.Windows.Forms.Button()
         Me.btnRefresh = New System.Windows.Forms.Button()
-        Me.btnEdit = New System.Windows.Forms.Button()
         Me.btnMove = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnSave = New System.Windows.Forms.Button()
@@ -126,18 +125,9 @@ Partial Class MainWindow
         Me.btnRefresh.Text = "Refresh"
         Me.btnRefresh.UseVisualStyleBackColor = True
         '
-        'btnEdit
-        '
-        Me.btnEdit.Location = New System.Drawing.Point(122, 334)
-        Me.btnEdit.Name = "btnEdit"
-        Me.btnEdit.Size = New System.Drawing.Size(75, 23)
-        Me.btnEdit.TabIndex = 5
-        Me.btnEdit.Text = "Edit"
-        Me.btnEdit.UseVisualStyleBackColor = True
-        '
         'btnMove
         '
-        Me.btnMove.Location = New System.Drawing.Point(234, 334)
+        Me.btnMove.Location = New System.Drawing.Point(113, 334)
         Me.btnMove.Name = "btnMove"
         Me.btnMove.Size = New System.Drawing.Size(75, 23)
         Me.btnMove.TabIndex = 6
@@ -179,7 +169,6 @@ Partial Class MainWindow
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnDelete)
         Me.Controls.Add(Me.btnMove)
-        Me.Controls.Add(Me.btnEdit)
         Me.Controls.Add(Me.btnRefresh)
         Me.Controls.Add(Me.gbClipping)
         Me.Controls.Add(Me.gbDraw)
@@ -203,7 +192,6 @@ Partial Class MainWindow
     Friend WithEvents btnClipPolygon As Button
     Friend WithEvents btnClipRectangular As Button
     Friend WithEvents btnRefresh As Button
-    Friend WithEvents btnEdit As Button
     Friend WithEvents btnMove As Button
     Friend WithEvents btnDelete As Button
     Friend WithEvents btnSave As Button
