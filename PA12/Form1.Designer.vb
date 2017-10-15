@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class Form1
+Partial Class MainWindow
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,32 +22,33 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.pbDraw = New System.Windows.Forms.PictureBox()
+        Me.picCanvas = New System.Windows.Forms.PictureBox()
         Me.btnExit = New System.Windows.Forms.Button()
         Me.gbDraw = New System.Windows.Forms.GroupBox()
-        Me.gbClipping = New System.Windows.Forms.GroupBox()
-        Me.btnDrawSPolygon = New System.Windows.Forms.Button()
         Me.btnDrawMPolygon = New System.Windows.Forms.Button()
-        Me.btnClipRectangular = New System.Windows.Forms.Button()
+        Me.btnDrawSPolygon = New System.Windows.Forms.Button()
+        Me.gbClipping = New System.Windows.Forms.GroupBox()
         Me.btnClipPolygon = New System.Windows.Forms.Button()
+        Me.btnClipRectangular = New System.Windows.Forms.Button()
         Me.btnRefresh = New System.Windows.Forms.Button()
         Me.btnEdit = New System.Windows.Forms.Button()
         Me.btnMove = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnSave = New System.Windows.Forms.Button()
-        CType(Me.pbDraw, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ListBox1 = New System.Windows.Forms.ListBox()
+        CType(Me.picCanvas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbDraw.SuspendLayout()
         Me.gbClipping.SuspendLayout()
         Me.SuspendLayout()
         '
-        'pbDraw
+        'picCanvas
         '
-        Me.pbDraw.BackColor = System.Drawing.Color.White
-        Me.pbDraw.Location = New System.Drawing.Point(13, 31)
-        Me.pbDraw.Name = "pbDraw"
-        Me.pbDraw.Size = New System.Drawing.Size(521, 281)
-        Me.pbDraw.TabIndex = 0
-        Me.pbDraw.TabStop = False
+        Me.picCanvas.BackColor = System.Drawing.Color.White
+        Me.picCanvas.Location = New System.Drawing.Point(13, 31)
+        Me.picCanvas.Name = "picCanvas"
+        Me.picCanvas.Size = New System.Drawing.Size(521, 281)
+        Me.picCanvas.TabIndex = 0
+        Me.picCanvas.TabStop = False
         '
         'btnExit
         '
@@ -64,57 +65,57 @@ Partial Class Form1
         Me.gbDraw.Controls.Add(Me.btnDrawSPolygon)
         Me.gbDraw.Location = New System.Drawing.Point(540, 32)
         Me.gbDraw.Name = "gbDraw"
-        Me.gbDraw.Size = New System.Drawing.Size(133, 135)
+        Me.gbDraw.Size = New System.Drawing.Size(91, 113)
         Me.gbDraw.TabIndex = 2
         Me.gbDraw.TabStop = False
         Me.gbDraw.Text = "Draw"
         '
-        'gbClipping
-        '
-        Me.gbClipping.Controls.Add(Me.btnClipPolygon)
-        Me.gbClipping.Controls.Add(Me.btnClipRectangular)
-        Me.gbClipping.Location = New System.Drawing.Point(540, 195)
-        Me.gbClipping.Name = "gbClipping"
-        Me.gbClipping.Size = New System.Drawing.Size(133, 117)
-        Me.gbClipping.TabIndex = 3
-        Me.gbClipping.TabStop = False
-        Me.gbClipping.Text = "Clipping"
-        '
-        'btnDrawSPolygon
-        '
-        Me.btnDrawSPolygon.Location = New System.Drawing.Point(31, 19)
-        Me.btnDrawSPolygon.Name = "btnDrawSPolygon"
-        Me.btnDrawSPolygon.Size = New System.Drawing.Size(75, 40)
-        Me.btnDrawSPolygon.TabIndex = 0
-        Me.btnDrawSPolygon.Text = "Single Polygon"
-        Me.btnDrawSPolygon.UseVisualStyleBackColor = True
-        '
         'btnDrawMPolygon
         '
-        Me.btnDrawMPolygon.Location = New System.Drawing.Point(31, 79)
+        Me.btnDrawMPolygon.Location = New System.Drawing.Point(6, 65)
         Me.btnDrawMPolygon.Name = "btnDrawMPolygon"
         Me.btnDrawMPolygon.Size = New System.Drawing.Size(75, 37)
         Me.btnDrawMPolygon.TabIndex = 1
         Me.btnDrawMPolygon.Text = "Multiple Polygon"
         Me.btnDrawMPolygon.UseVisualStyleBackColor = True
         '
-        'btnClipRectangular
+        'btnDrawSPolygon
         '
-        Me.btnClipRectangular.Location = New System.Drawing.Point(31, 19)
-        Me.btnClipRectangular.Name = "btnClipRectangular"
-        Me.btnClipRectangular.Size = New System.Drawing.Size(75, 35)
-        Me.btnClipRectangular.TabIndex = 0
-        Me.btnClipRectangular.Text = "Rectangular"
-        Me.btnClipRectangular.UseVisualStyleBackColor = True
+        Me.btnDrawSPolygon.Location = New System.Drawing.Point(6, 19)
+        Me.btnDrawSPolygon.Name = "btnDrawSPolygon"
+        Me.btnDrawSPolygon.Size = New System.Drawing.Size(75, 40)
+        Me.btnDrawSPolygon.TabIndex = 0
+        Me.btnDrawSPolygon.Text = "Single Polygon"
+        Me.btnDrawSPolygon.UseVisualStyleBackColor = True
+        '
+        'gbClipping
+        '
+        Me.gbClipping.Controls.Add(Me.btnClipPolygon)
+        Me.gbClipping.Controls.Add(Me.btnClipRectangular)
+        Me.gbClipping.Location = New System.Drawing.Point(540, 151)
+        Me.gbClipping.Name = "gbClipping"
+        Me.gbClipping.Size = New System.Drawing.Size(91, 108)
+        Me.gbClipping.TabIndex = 3
+        Me.gbClipping.TabStop = False
+        Me.gbClipping.Text = "Clipping"
         '
         'btnClipPolygon
         '
-        Me.btnClipPolygon.Location = New System.Drawing.Point(31, 60)
+        Me.btnClipPolygon.Location = New System.Drawing.Point(6, 60)
         Me.btnClipPolygon.Name = "btnClipPolygon"
         Me.btnClipPolygon.Size = New System.Drawing.Size(75, 36)
         Me.btnClipPolygon.TabIndex = 1
         Me.btnClipPolygon.Text = "Polygon"
         Me.btnClipPolygon.UseVisualStyleBackColor = True
+        '
+        'btnClipRectangular
+        '
+        Me.btnClipRectangular.Location = New System.Drawing.Point(6, 19)
+        Me.btnClipRectangular.Name = "btnClipRectangular"
+        Me.btnClipRectangular.Size = New System.Drawing.Size(75, 35)
+        Me.btnClipRectangular.TabIndex = 0
+        Me.btnClipRectangular.Text = "Rectangular"
+        Me.btnClipRectangular.UseVisualStyleBackColor = True
         '
         'btnRefresh
         '
@@ -161,11 +162,20 @@ Partial Class Form1
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = True
         '
-        'Form1
+        'ListBox1
+        '
+        Me.ListBox1.FormattingEnabled = True
+        Me.ListBox1.Location = New System.Drawing.Point(637, 31)
+        Me.ListBox1.Name = "ListBox1"
+        Me.ListBox1.Size = New System.Drawing.Size(68, 108)
+        Me.ListBox1.TabIndex = 9
+        '
+        'MainWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(686, 369)
+        Me.ClientSize = New System.Drawing.Size(708, 369)
+        Me.Controls.Add(Me.ListBox1)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnDelete)
         Me.Controls.Add(Me.btnMove)
@@ -174,17 +184,17 @@ Partial Class Form1
         Me.Controls.Add(Me.gbClipping)
         Me.Controls.Add(Me.gbDraw)
         Me.Controls.Add(Me.btnExit)
-        Me.Controls.Add(Me.pbDraw)
-        Me.Name = "Form1"
+        Me.Controls.Add(Me.picCanvas)
+        Me.Name = "MainWindow"
         Me.Text = "Draw me"
-        CType(Me.pbDraw, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.picCanvas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbDraw.ResumeLayout(False)
         Me.gbClipping.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
 
-    Friend WithEvents pbDraw As PictureBox
+    Friend WithEvents picCanvas As PictureBox
     Friend WithEvents btnExit As Button
     Friend WithEvents gbDraw As GroupBox
     Friend WithEvents btnDrawMPolygon As Button
@@ -197,4 +207,5 @@ Partial Class Form1
     Friend WithEvents btnMove As Button
     Friend WithEvents btnDelete As Button
     Friend WithEvents btnSave As Button
+    Friend WithEvents ListBox1 As ListBox
 End Class
