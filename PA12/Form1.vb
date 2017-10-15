@@ -1,8 +1,6 @@
-﻿Imports System.Drawing.Drawing2D 'get smoothing function from here 
+﻿Imports System.Drawing.Drawing2D
 
 Public Class MainWindow
-    Public canvas As Bitmap
-
     'To know which button chosen.
     Private ButtonMenu As String
     ' Each polygon is represented by a List(Of Point).
@@ -18,36 +16,44 @@ Public Class MainWindow
     ' Start or continue drawing a new polygon.
 
     Private Sub picCanvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseDown
-        ' See if we are already drawing a polygon.
-        If (NewPolygon IsNot Nothing) Then
-            ' We are already drawing a polygon.
-            ' If it's the right mouse button, finish this polygon.
-            If (e.Button = MouseButtons.Right) Then
-                ' Finish this polygon.
-                If (NewPolygon.Count > 2) Then Polygons.Add(NewPolygon)
-                NewPolygon = Nothing
-            Else
-                ' Add a point to this polygon.
-                If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
-                    NewPolygon.Add(e.Location)
+        If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
+            ' See if we are already drawing a polygon.
+            If (NewPolygon IsNot Nothing) Then
+                ' We are already drawing a polygon.
+                ' If it's the right mouse button, finish this polygon.
+                If (e.Button = MouseButtons.Right) Then
+                    ' Finish this polygon.
+                    If (NewPolygon.Count > 2) Then Polygons.Add(NewPolygon) 'NewPolygon store coordinate
+                    'Remove current polygon coordinate
+                    NewPolygon = Nothing
+                    If ButtonMenu = "SPolygon" Then
+                        ButtonMenu = Nothing
+                    End If
+                Else
+                    ' Add a point to this polygon.
+                    If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
+                        NewPolygon.Add(e.Location)
+                    End If
                 End If
+            Else
+                ' Start a new polygon.
+                NewPolygon = New List(Of Point)()
+                NewPoint = e.Location
+                NewPolygon.Add(e.Location)
             End If
-        Else
-            ' Start a new polygon.
-            NewPolygon = New List(Of Point)()
-            NewPoint = e.Location
-            NewPolygon.Add(e.Location)
-        End If
 
-        ' Redraw.
-        picCanvas.Invalidate()
+            ' Redraw.
+            picCanvas.Invalidate()
+        End If
     End Sub
 
     ' Move the next point in the new polygon.
     Private Sub picCanvas_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseMove
-        If (NewPolygon Is Nothing) Then Exit Sub
-        NewPoint = e.Location
-        picCanvas.Invalidate()
+        If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
+            If (NewPolygon Is Nothing) Then Exit Sub
+            NewPoint = e.Location
+            picCanvas.Invalidate()
+        End If
     End Sub
 
     ' Redraw old polygons in blue. Draw the new polygon in green.
@@ -58,7 +64,7 @@ Public Class MainWindow
 
         ' Draw the old polygons.
         For Each polygon As List(Of Point) In Polygons
-
+            e.Graphics.FillPolygon(Brushes.Transparent, polygon.ToArray())
             e.Graphics.DrawPolygon(Pens.Blue, polygon.ToArray())
         Next polygon
 
@@ -82,14 +88,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub MainWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        canvas = New Bitmap(picCanvas.Width, picCanvas.Height)
+
+
     End Sub
 
     Private Sub picCanvas_Click(sender As Object, e As EventArgs) Handles picCanvas.Click
-
-    End Sub
-
-    Private Sub clearcanvas()
 
     End Sub
 
@@ -114,7 +117,6 @@ Public Class MainWindow
     End Sub
 
 
-
     Private Sub btnMove_Click(sender As Object, e As EventArgs) Handles btnMove.Click
 
     End Sub
@@ -129,9 +131,5 @@ Public Class MainWindow
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
         End
-    End Sub
-
-    Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
-
     End Sub
 End Class
