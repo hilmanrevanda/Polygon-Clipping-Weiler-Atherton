@@ -21,23 +21,23 @@ Public Class MainWindow
             If (NewPolygon IsNot Nothing) Then
                 ' We are already drawing a polygon.
                 ' If it's the right mouse button, finish this polygon.
+
                 If (e.Button = MouseButtons.Right) Then
-                    ' Finish this polygon.
-                    If (NewPolygon.Count > 2) Then Polygons.Add(NewPolygon) 'NewPolygon store coordinate
-                    'Remove current polygon coordinate
-                    NewPolygon = Nothing
-                    If ButtonMenu = "SPolygon" Then
-                        ButtonMenu = Nothing
+                        ' Finish this polygon.
+                        If (NewPolygon.Count > 2) Then Polygons.Add(NewPolygon) 'NewPolygon store coordinate
+                        'Remove current polygon coordinate
+
+                        NewPolygon = Nothing
+
+                Else
+                        ' Add a point to this polygon.
+                        If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
+                            NewPolygon.Add(e.Location)
+                        End If
                     End If
                 Else
-                    ' Add a point to this polygon.
-                    If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
-                        NewPolygon.Add(e.Location)
-                    End If
-                End If
-            Else
-                ' Start a new polygon.
-                NewPolygon = New List(Of Point)()
+                    ' Start a new polygon.
+                    NewPolygon = New List(Of Point)()
                 NewPoint = e.Location
                 NewPolygon.Add(e.Location)
             End If
@@ -63,8 +63,10 @@ Public Class MainWindow
         e.Graphics.Clear(picCanvas.BackColor)
 
         ' Draw the old polygons.
+
         For Each polygon As List(Of Point) In Polygons
-            e.Graphics.FillPolygon(Brushes.Transparent, polygon.ToArray())
+
+
             e.Graphics.DrawPolygon(Pens.Blue, polygon.ToArray())
         Next polygon
 
@@ -73,6 +75,9 @@ Public Class MainWindow
             ' Draw the new polygon.
             If (NewPolygon.Count > 1) Then
                 e.Graphics.DrawLines(Pens.Green, NewPolygon.ToArray())
+                If ButtonMenu = "SPolygon" Then
+                    Polygons.Clear()
+                End If
             End If
 
             ' Draw the newest edge.
