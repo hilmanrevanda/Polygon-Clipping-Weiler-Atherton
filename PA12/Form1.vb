@@ -25,9 +25,8 @@ Public Class MainWindow
                 If (e.Button = MouseButtons.Right) Then
                         ' Finish this polygon.
                         If (NewPolygon.Count > 2) Then Polygons.Add(NewPolygon) 'NewPolygon store coordinate
-                        'Remove current polygon coordinate
-
-                        NewPolygon = Nothing
+                    'Remove current polygon coordinate
+                    NewPolygon = Nothing
 
                 Else
                         ' Add a point to this polygon.
@@ -75,6 +74,7 @@ Public Class MainWindow
             ' Draw the new polygon.
             If (NewPolygon.Count > 1) Then
                 e.Graphics.DrawLines(Pens.Green, NewPolygon.ToArray())
+                'Delete all the previous polygons when we draw another one from Single Polygon button
                 If ButtonMenu = "SPolygon" Then
                     Polygons.Clear()
                 End If
@@ -118,6 +118,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click
+        Polygons.Clear()
 
     End Sub
 
