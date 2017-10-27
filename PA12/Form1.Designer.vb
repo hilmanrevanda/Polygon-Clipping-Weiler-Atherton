@@ -34,7 +34,7 @@ Partial Class MainWindow
         Me.btnMove = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnSave = New System.Windows.Forms.Button()
-        Me.ListBox1 = New System.Windows.Forms.ListBox()
+        Me.listBox1 = New System.Windows.Forms.ListBox()
         CType(Me.picCanvas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbDraw.SuspendLayout()
         Me.gbClipping.SuspendLayout()
@@ -152,20 +152,20 @@ Partial Class MainWindow
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = True
         '
-        'ListBox1
+        'listBox1
         '
-        Me.ListBox1.FormattingEnabled = True
-        Me.ListBox1.Location = New System.Drawing.Point(637, 31)
-        Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(68, 108)
-        Me.ListBox1.TabIndex = 9
+        Me.listBox1.FormattingEnabled = True
+        Me.listBox1.Location = New System.Drawing.Point(637, 31)
+        Me.listBox1.Name = "listBox1"
+        Me.listBox1.Size = New System.Drawing.Size(68, 108)
+        Me.listBox1.TabIndex = 9
         '
         'MainWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(708, 369)
-        Me.Controls.Add(Me.ListBox1)
+        Me.Controls.Add(Me.listBox1)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnDelete)
         Me.Controls.Add(Me.btnMove)
@@ -195,5 +195,5 @@ Partial Class MainWindow
     Friend WithEvents btnMove As Button
     Friend WithEvents btnDelete As Button
     Friend WithEvents btnSave As Button
-    Friend WithEvents ListBox1 As ListBox
+    Friend WithEvents listBox1 As ListBox
 End Class

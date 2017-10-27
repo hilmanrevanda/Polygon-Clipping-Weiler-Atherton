@@ -1,6 +1,8 @@
 ﻿Imports System.Drawing.Drawing2D
 
 Public Class MainWindow
+
+
     'To know which button chosen.
     Private ButtonMenu As String
     ' Each polygon is represented by a List(Of Point).
@@ -13,8 +15,10 @@ Public Class MainWindow
     ' The current mouse position while drawing a new polygon.
     Private NewPoint As Point
 
-    ' Start or continue drawing a new polygon.
 
+
+
+    ' Start or continue drawing a new polygon.
     Private Sub picCanvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseDown
         If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
             ' See if we are already drawing a polygon.
@@ -23,22 +27,23 @@ Public Class MainWindow
                 ' If it's the right mouse button, finish this polygon.
 
                 If (e.Button = MouseButtons.Right) Then
-                        ' Finish this polygon.
-                        If (NewPolygon.Count > 2) Then Polygons.Add(NewPolygon) 'NewPolygon store coordinate
+                    ' Finish this polygon.
+                    If (NewPolygon.Count > 2) Then Polygons.Add(NewPolygon) 'NewPolygon store coordinate
                     'Remove current polygon coordinate
                     NewPolygon = Nothing
 
                 Else
-                        ' Add a point to this polygon.
-                        If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
-                            NewPolygon.Add(e.Location)
-                        End If
+                    ' Add a point to this polygon.
+                    If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
+                        NewPolygon.Add(e.Location)
                     End If
-                Else
-                    ' Start a new polygon.
-                    NewPolygon = New List(Of Point)()
+                End If
+            Else
+                ' Start a new polygon.
+                NewPolygon = New List(Of Point)()
                 NewPoint = e.Location
                 NewPolygon.Add(e.Location)
+
             End If
 
             ' Redraw.
@@ -110,15 +115,16 @@ Public Class MainWindow
     End Sub
 
     Private Sub btnClipRectangular_Click(sender As Object, e As EventArgs) Handles btnClipRectangular.Click
-
+        ButtonMenu = "RClipping"
     End Sub
 
     Private Sub btnClipPolygon_Click(sender As Object, e As EventArgs) Handles btnClipPolygon.Click
-
+        ButtonMenu = "FClipping"
     End Sub
 
     Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click
-        Polygons.Clear()
+        'Clear list box
+        listBox1.Items.Clear()
 
     End Sub
 
@@ -137,5 +143,9 @@ Public Class MainWindow
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
         End
+    End Sub
+
+    Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles listBox1.SelectedIndexChanged
+
     End Sub
 End Class
