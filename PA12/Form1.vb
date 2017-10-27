@@ -129,13 +129,11 @@ Public Class MainWindow
 
     Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click
         ButtonMenu = "Refresh"
-        'Clear list box
+        'Clear list box, polygons and canvas
         listBox1.Items.Clear()
         Polygons.Clear()
-
-
+        picCanvas.Image = Nothing
     End Sub
-
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         ButtonMenu = "Delete"
