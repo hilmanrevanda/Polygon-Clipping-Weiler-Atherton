@@ -36,6 +36,8 @@ Public Class MainWindow
                     ' Add a point to this polygon.
                     If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
                         NewPolygon.Add(e.Location)
+                        'Add the point into list box
+                        listBox1.Items.Add(NewPoint)
                     End If
                 End If
             Else
@@ -43,6 +45,7 @@ Public Class MainWindow
                 NewPolygon = New List(Of Point)()
                 NewPoint = e.Location
                 NewPolygon.Add(e.Location)
+
 
             End If
 
@@ -57,6 +60,7 @@ Public Class MainWindow
             If (NewPolygon Is Nothing) Then Exit Sub
             NewPoint = e.Location
             picCanvas.Invalidate()
+
         End If
     End Sub
 
@@ -70,8 +74,8 @@ Public Class MainWindow
 
         For Each polygon As List(Of Point) In Polygons
 
-
             e.Graphics.DrawPolygon(Pens.Blue, polygon.ToArray())
+
         Next polygon
 
         ' Draw the new polygon.
@@ -79,6 +83,7 @@ Public Class MainWindow
             ' Draw the new polygon.
             If (NewPolygon.Count > 1) Then
                 e.Graphics.DrawLines(Pens.Green, NewPolygon.ToArray())
+
                 'Delete all the previous polygons when we draw another one from Single Polygon button
                 If ButtonMenu = "SPolygon" Then
                     Polygons.Clear()
@@ -123,18 +128,17 @@ Public Class MainWindow
     End Sub
 
     Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click
+        ButtonMenu = "Refresh"
         'Clear list box
         listBox1.Items.Clear()
+        Polygons.Clear()
+
 
     End Sub
 
-
-    Private Sub btnMove_Click(sender As Object, e As EventArgs) Handles btnMove.Click
-
-    End Sub
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
-
+        ButtonMenu = "Delete"
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
