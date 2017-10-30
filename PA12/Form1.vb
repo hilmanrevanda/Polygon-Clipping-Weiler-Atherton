@@ -31,6 +31,7 @@ Public Class MainWindow
                     ' Finish this polygon.
                     If (NewPolygon.Count > 2) Then Polygons.Add(NewPolygon) 'NewPolygon store coordinate
                     'Remove current polygon coordinate
+                    MsgBox(IsPolygonConvex(NewPolygon).ToString)
                     NewPolygon = Nothing
 
                 Else
@@ -164,4 +165,38 @@ Public Class MainWindow
     Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles listBox1.SelectedIndexChanged
 
     End Sub
+
+    Function IsPolygonConvex(polygon As List(Of Point)) As Boolean
+        Dim N As Integer = 0
+        Dim P As Integer = 0
+
+        Dim nextpoint As Integer
+
+        For currentpoint = 0 To polygon.Count - 1
+            If currentpoint + 1 = polygon.Count Then
+                nextpoint = 0
+            Else nextpoint = currentpoint + 1
+            End If
+
+            If CrossProductOf(polygon(currentpoint).X, polygon(nextpoint).X, polygon(currentpoint).Y, polygon(nextpoint).Y) >= 0 Then
+                P = P + 1
+            Else N = N + 1
+            End If
+        Next
+
+        MsgBox(P.ToString & " " & N.ToString)
+        If N = 0 And P > 0 Then
+            Return True
+        ElseIf P = 0 And N > 0 Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Function CrossProductOf(Ax As Integer, Bx As Integer, Ay As Integer, By As Integer) As Integer
+        Dim result As Integer = (Ax * By) - (Ay * Bx)
+        MsgBox("Ax " & Ax.ToString & "Ay " & Ay.ToString & "Bx " & Bx.ToString & "By " & By.ToString & "Hasil " & result.ToString)
+        Return (Ax * By) - (Ay * Bx)
+    End Function
 End Class
