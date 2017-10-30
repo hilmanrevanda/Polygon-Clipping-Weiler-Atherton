@@ -23,9 +23,9 @@ Public Class MainWindow
         If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
             ' See if we are already drawing a polygon.
             If (NewPolygon IsNot Nothing) Then
+
                 ' We are already drawing a polygon.
                 ' If it's the right mouse button, finish this polygon.
-
                 If (e.Button = MouseButtons.Right) Then
                     ' Finish this polygon.
                     If (NewPolygon.Count > 2) Then Polygons.Add(NewPolygon) 'NewPolygon store coordinate
@@ -38,6 +38,8 @@ Public Class MainWindow
                         NewPolygon.Add(e.Location)
                         'Add the point into list box
                         listBox1.Items.Add(NewPoint)
+
+
                     End If
                 End If
             Else
@@ -45,7 +47,7 @@ Public Class MainWindow
                 NewPolygon = New List(Of Point)()
                 NewPoint = e.Location
                 NewPolygon.Add(e.Location)
-
+                listBox1.Items.Add(NewPoint)
 
             End If
 
@@ -86,7 +88,9 @@ Public Class MainWindow
 
                 'Delete all the previous polygons when we draw another one from Single Polygon button
                 If ButtonMenu = "SPolygon" Then
+
                     Polygons.Clear()
+
                 End If
             End If
 
