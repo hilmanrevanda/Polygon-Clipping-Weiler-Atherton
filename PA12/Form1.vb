@@ -49,7 +49,7 @@ Public Class MainWindow
                 NewPolygon.Add(e.Location)
                 listBox1.Items.Add("Polygon")
                 listBox1.Items.Add(NewPoint)
-                i = i + 1
+
 
             End If
 
@@ -143,9 +143,12 @@ Public Class MainWindow
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         ButtonMenu = "Delete"
+
         If (listBox1.SelectedItem Is "Polygon") Then
             listBox1.Items.Remove(listBox1.SelectedItem)
 
+        Else
+            MsgBox("Please select a polygon!")
         End If
 
     End Sub
