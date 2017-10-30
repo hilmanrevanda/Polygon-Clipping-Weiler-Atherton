@@ -2,6 +2,7 @@
 
 Public Class MainWindow
 
+    Dim i As Integer
 
     'To know which button chosen.
     Private ButtonMenu As String
@@ -38,8 +39,7 @@ Public Class MainWindow
                         NewPolygon.Add(e.Location)
                         'Add the point into list box
                         listBox1.Items.Add(NewPoint)
-
-
+                        i = i + 1
                     End If
                 End If
             Else
@@ -47,7 +47,9 @@ Public Class MainWindow
                 NewPolygon = New List(Of Point)()
                 NewPoint = e.Location
                 NewPolygon.Add(e.Location)
+                listBox1.Items.Add("Polygon")
                 listBox1.Items.Add(NewPoint)
+                i = i + 1
 
             End If
 
@@ -141,6 +143,11 @@ Public Class MainWindow
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         ButtonMenu = "Delete"
+        If (listBox1.SelectedItem Is "Polygon") Then
+            listBox1.Items.Remove(listBox1.SelectedItem)
+
+        End If
+
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
