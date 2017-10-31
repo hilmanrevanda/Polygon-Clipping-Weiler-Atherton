@@ -193,8 +193,10 @@ Public Class MainWindow
 
         MsgBox(P.ToString & " " & N.ToString)
         If N = 0 And P > 0 Then
+            MsgBox("Clockwise")
             Return True
         ElseIf P = 0 And N > 0 Then
+            MsgBox("Anti-Clockwise")
             Return True
         Else
             Return False
