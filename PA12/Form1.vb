@@ -199,6 +199,7 @@ Public Class MainWindow
             MsgBox("Anti-Clockwise")
             Return True
         Else
+            MsgBox("Not a convex cliping")
             Return False
         End If
     End Function
