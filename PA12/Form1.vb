@@ -29,9 +29,8 @@ Public Class MainWindow
                 ' If it's the right mouse button, finish this polygon.
                 If (e.Button = MouseButtons.Right) Then
                     ' Finish this polygon.
-                    If (NewPolygon.Count > 2) Then Polygons.Add(NewPolygon) 'NewPolygon store coordinate
+                    If (NewPolygon.Count > 2) And IsPolygonConvex(NewPolygon) Then Polygons.Add(NewPolygon) 'NewPolygon store coordinate
                     'Remove current polygon coordinate
-                    MsgBox(IsPolygonConvex(NewPolygon).ToString)
                     NewPolygon = Nothing
 
                 Else
@@ -191,7 +190,8 @@ Public Class MainWindow
             End If
         Next
 
-        MsgBox(P.ToString & " " & N.ToString)
+        'MsgBox(P.ToString & " " & N.ToString)
+
         If N = 0 And P > 0 Then
             MsgBox("Clockwise")
             Return True
@@ -205,8 +205,6 @@ Public Class MainWindow
     End Function
 
     Function CrossProductOf(Ax As Integer, Bx As Integer, Ay As Integer, By As Integer) As Integer
-        Dim result As Integer = (Ax * By) - (Ay * Bx)
-        MsgBox("Ax " & Ax.ToString & "Ay " & Ay.ToString & "Bx " & Bx.ToString & "By " & By.ToString & "Hasil " & result.ToString)
         Return (Ax * By) - (Ay * Bx)
     End Function
 End Class
