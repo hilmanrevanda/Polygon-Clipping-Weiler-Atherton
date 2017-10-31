@@ -171,14 +171,21 @@ Public Class MainWindow
         Dim P As Integer = 0
 
         Dim nextpoint As Integer
+        Dim nextnextPoint As Integer
 
         For currentpoint = 0 To polygon.Count - 1
             If currentpoint + 1 = polygon.Count Then
                 nextpoint = 0
+                nextnextPoint = 1
+            ElseIf currentpoint + 2 = polygon.Count Then
+                nextnextPoint = 0
             Else nextpoint = currentpoint + 1
+                nextnextPoint = currentpoint + 2
             End If
 
-            If CrossProductOf(polygon(currentpoint).X, polygon(nextpoint).X, polygon(currentpoint).Y, polygon(nextpoint).Y) >= 0 Then
+
+
+            If CrossProductOf(((polygon(nextpoint).X) - (polygon(currentpoint).X)), ((polygon(nextnextPoint).X) - (polygon(nextpoint).X)), ((polygon(nextpoint).Y) - (polygon(currentpoint).Y)), ((polygon(nextnextPoint).Y) - (polygon(nextpoint).Y))) >= 0 Then
                 P = P + 1
             Else N = N + 1
             End If
