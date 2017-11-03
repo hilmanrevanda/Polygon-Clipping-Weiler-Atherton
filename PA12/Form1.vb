@@ -13,6 +13,8 @@ Public Class MainWindow
     ' Ambil nilai NewPolygon pada line 24 sebelum di hapus untuk record coordinate setiap poligon guna pengaplikasian ke rumus nantinya, atau ada cara lain?
     Private NewPolygon As List(Of Point) = Nothing
 
+    Private Clockwise As Boolean = Nothing
+
     ' The current mouse position while drawing a new polygon.
     Private NewPoint As Point
 
@@ -184,7 +186,8 @@ Public Class MainWindow
 
 
 
-            If CrossProductOf(((polygon(nextpoint).X) - (polygon(currentpoint).X)), ((polygon(nextnextPoint).X) - (polygon(nextpoint).X)), ((polygon(nextpoint).Y) - (polygon(currentpoint).Y)), ((polygon(nextnextPoint).Y) - (polygon(nextpoint).Y))) >= 0 Then
+            If CrossProductOf(((polygon(nextpoint).X) - (polygon(currentpoint).X)), ((polygon(nextnextPoint).X) - (polygon(nextpoint).X)),
+                              ((polygon(nextpoint).Y) - (polygon(currentpoint).Y)), ((polygon(nextnextPoint).Y) - (polygon(nextpoint).Y))) >= 0 Then
                 P = P + 1
             Else N = N + 1
             End If
@@ -193,10 +196,10 @@ Public Class MainWindow
         'MsgBox(P.ToString & " " & N.ToString)
 
         If N = 0 And P > 0 Then
-            MsgBox("Clockwise")
+            Clockwise = True
             Return True
         ElseIf P = 0 And N > 0 Then
-            MsgBox("Anti-Clockwise")
+            Clockwise = False
             Return True
         Else
             MsgBox("Not a convex cliping")
@@ -206,5 +209,59 @@ Public Class MainWindow
 
     Function CrossProductOf(Ax As Integer, Bx As Integer, Ay As Integer, By As Integer) As Integer
         Return (Ax * By) - (Ay * Bx)
+    End Function
+
+
+    Function ClippingPoint(Polygon As List(Of Point), Rect As List(Of Point)) As Point
+
+        Dim B As Integer
+        Dim T As Integer
+
+        For A = 0 To Polygon.Count - 1
+            B = NextPoint(A, Polygon.Count)
+
+            For S = 0 To Rect.Count
+                T = NextPoint(S, Rect.Count)
+
+                If (InsidePoint(Rect(A), Rect(B), Polygon(S)) And Not InsidePoint(Rect(A), Rect(B), Polygon(T))) Then 'true and false means in out
+                    'leaving
+                ElseIf (Not InsidePoint(Rect(A), Rect(B), Polygon(S)) And InsidePoint(Rect(A), Rect(B), Polygon(T))) Then 'false and true means out in
+                    'entering
+                End If
+                'if t max < t min leaving then acc
+            Next
+        Next
+
+    End Function
+
+    'Fungsi ini menentukan inside atau outside dari saru point saja (Point S)
+    Function InsidePoint(WA As Point, WB As Point, S As Point) As Boolean
+        Dim N As Point
+        Dim D As Point
+
+        N.X = WB.Y - WA.Y
+        N.Y = WB.X - WA.X
+        If (Clockwise) Then
+            N.Y = N.Y * -1
+        ElseIf (Not Clockwise) Then
+            N.X = N.X * -1
+        End If
+
+        D.X = (S.X - WA.X) * N.X
+        D.Y = (S.Y - WA.Y) * N.Y
+
+        If (D.X And D.Y >= 0) Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Function NextPoint(Point As Integer, Total As Integer) As Integer
+        If Point + 1 = Total Then
+            Return 0
+        Else
+            Return Point + 1
+        End If
     End Function
 End Class
