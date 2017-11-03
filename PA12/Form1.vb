@@ -1,9 +1,7 @@
 ﻿Imports System.Drawing.Drawing2D
 
 Public Class MainWindow
-
     Dim i As Integer
-
     'To know which button chosen.
     Private ButtonMenu As String
     ' Each polygon is represented by a List(Of Point).
@@ -16,38 +14,57 @@ Public Class MainWindow
     ' The current mouse position while drawing a new polygon.
     Private NewPoint As Point
 
-
-
-
     ' Start or continue drawing a new polygon.
     Private Sub picCanvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseDown
-        If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
-            ' See if we are already drawing a polygon.
-            If (NewPolygon IsNot Nothing) Then
 
-                ' We are already drawing a polygon.
-                ' If it's the right mouse button, finish this polygon.
-                If (e.Button = MouseButtons.Right) Then
-                    ' Finish this polygon.
-                    If (NewPolygon.Count > 2) And IsPolygonConvex(NewPolygon) Then Polygons.Add(NewPolygon) 'NewPolygon store coordinate
-                    'Remove current polygon coordinate
-                    NewPolygon = Nothing
+        ' See if we are already drawing a polygon.
+        If (NewPolygon IsNot Nothing) Then
 
-                Else
-                    ' Add a point to this polygon.
-                    If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
-                        NewPolygon.Add(e.Location)
-                        'Add the point into list box
-                        listBox1.Items.Add(NewPoint)
-                        i = i + 1
+            ' We are already drawing a polygon.
+            ' If it's the right mouse button, finish this polygon.
+            If (e.Button = MouseButtons.Right) Then
+                ' Finish this polygon.
+
+                If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
+                    If (NewPolygon.Count > 2) Then
+                        'NewPolygon store coordinate
+                        Polygons.Add(NewPolygon)
+                        'Remove current polygon coordinate
+                        NewPolygon = Nothing
+                    End If
+                ElseIf ButtonMenu = "RClipping" Then
+                    If (i = 4) And IsPolygonConvex(NewPolygon) Then
+                        'NewPolygon store coordinate
+                        Polygons.Add(NewPolygon)
+                        'Remove current polygon coordinate
+                        NewPolygon = Nothing
+                    Else
+                        MsgBox("Only for rectangular clipping!")
+                        NewPolygon = Nothing
                     End If
                 End If
+            Else
+                ' Add a point to this polygon.
+                If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
+
+                    NewPolygon.Add(e.Location)
+                    'Add the point into list box
+                    listBox1.Items.Add(NewPoint)
+                    i = 0
+                    i += 1
+
+                End If
+            End If
             Else
                 ' Start a new polygon.
                 NewPolygon = New List(Of Point)()
                 NewPoint = e.Location
                 NewPolygon.Add(e.Location)
-                listBox1.Items.Add("Polygon")
+                If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
+                    listBox1.Items.Add("Polygon")
+                ElseIf ButtonMenu = "RClipping" Then
+                    listBox1.Items.Add("Clipping")
+                End If
                 listBox1.Items.Add(NewPoint)
 
 
@@ -55,12 +72,12 @@ Public Class MainWindow
 
             ' Redraw.
             picCanvas.Invalidate()
-        End If
+
     End Sub
 
     ' Move the next point in the new polygon.
     Private Sub picCanvas_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseMove
-        If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
+        If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Or ButtonMenu = "RClipping" Then
             If (NewPolygon Is Nothing) Then Exit Sub
             NewPoint = e.Location
             picCanvas.Invalidate()
