@@ -20,6 +20,9 @@ Public Class MainWindow
 
     Private TempPoint As Point
 
+    'test
+    Dim lst As New LinkedList(Of LinkendL)
+
     ' Start or continue drawing a new polygon.
     Private Sub picCanvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseDown
 
@@ -88,6 +91,10 @@ Public Class MainWindow
                         ButtonMenu = Nothing
                         btnClipRectangular.Enabled = False
                         btnClipPolygon.Enabled = False
+
+                        Clockwise = True
+
+                        ClippingPoint(Polygons(0), Polygons(1))
                     Else
                         NewPolygon.Add(e.Location)
                         'Add the point into list box
@@ -281,13 +288,17 @@ Public Class MainWindow
         For A = 0 To Polygon.Count - 1
             B = NextPoint(A, Polygon.Count)
 
-            For S = 0 To Rect.Count
+            For S = 0 To Rect.Count - 1
                 T = NextPoint(S, Rect.Count)
 
-                If (InsidePoint(Rect(A), Rect(B), Polygon(S)) And Not InsidePoint(Rect(A), Rect(B), Polygon(T))) Then 'true and false means in out
+                If (Not InsidePoint(Rect(S), Rect(T), Polygon(B)) And InsidePoint(Rect(S), Rect(T), Polygon(A))) Then 'False and True means out in
                     'leaving
-                ElseIf (Not InsidePoint(Rect(A), Rect(B), Polygon(S)) And InsidePoint(Rect(A), Rect(B), Polygon(T))) Then 'false and true means out in
+                    MsgBox("edge " & S & T & " with " & A & B & " is EN")
+                ElseIf (InsidePoint(Rect(S), Rect(T), Polygon(B)) And Not InsidePoint(Rect(S), Rect(T), Polygon(A))) Then 'true and false means in out
                     'entering
+                    MsgBox("edge " & S & T & " with " & A & B & " is LEAV")
+                Else
+                    MsgBox("rejected")
                 End If
                 'if t max < t min leaving then acc
             Next
@@ -311,7 +322,7 @@ Public Class MainWindow
         D.X = (S.X - WA.X) * N.X
         D.Y = (S.Y - WA.Y) * N.Y
 
-        If (D.X And D.Y >= 0) Then
+        If (D.X >= 0 And D.Y >= 0) Then
             Return True
         Else
             Return False
@@ -325,4 +336,14 @@ Public Class MainWindow
             Return Point + 1
         End If
     End Function
+
+    'coba linkend list
+    Sub test()
+        lst.AddFirst(New LinkendL With {.Value = "Ziggy"})
+    End Sub
+End Class
+
+Friend Class LinkendL
+    Public Property Value As String
+    Public Property nextL As LinkendL = Nothing
 End Class
