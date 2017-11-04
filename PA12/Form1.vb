@@ -37,6 +37,10 @@ Public Class MainWindow
                         Polygons.Add(NewPolygon)
                         'Remove current polygon coordinate
                         NewPolygon = Nothing
+
+                        btnClipRectangular.Enabled = True
+                        btnClipPolygon.Enabled = True
+
                     End If
                 ElseIf ButtonMenu = "RClipping" Then
                     'test
@@ -44,43 +48,52 @@ Public Class MainWindow
             Else
                 ' Add a point to this polygon.
                 If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
-                    '02 22
-                    '00 20
-                    Dim A As Point
-                    Dim B As Point
-                    Dim C As Point
-
-                    A = TempPoint
-                    B = e.Location
-
-                    C.X = B.X
-                    C.Y = A.Y
-
-                    NewPolygon.Add(C)
-                    'Add the point into list box
-                    listBox1.Items.Add(NewPoint)
-                    i = 0
-                    i += 1
-
-                    NewPolygon.Add(B)
-                    'Add the point into list box
-                    listBox1.Items.Add(NewPoint)
-                    i = 0
-                    i += 1
-
-                    C.X = A.X
-                    C.Y = B.Y
-
-                    NewPolygon.Add(C)
-                    'Add the point into list box
-                    listBox1.Items.Add(NewPoint)
-                    i = 0
-                    i += 1
-
                     If ButtonMenu = "RClipping" Then
+                        '02 22
+                        '00 20
+                        Dim A As Point
+                        Dim B As Point
+                        Dim C As Point
+
+                        A = TempPoint
+                        B = e.Location
+
+                        C.X = B.X
+                        C.Y = A.Y
+
+                        NewPolygon.Add(C)
+                        'Add the point into list box
+                        listBox1.Items.Add(NewPoint)
+                        i = 0
+                        i += 1
+
+                        NewPolygon.Add(B)
+                        'Add the point into list box
+                        listBox1.Items.Add(NewPoint)
+                        i = 0
+                        i += 1
+
+                        C.X = A.X
+                        C.Y = B.Y
+
+                        NewPolygon.Add(C)
+                        'Add the point into list box
+                        listBox1.Items.Add(NewPoint)
+                        i = 0
+                        i += 1
                         'NewPolygon store coordinaten coordinate
                         Polygons.Add(NewPolygon)
                         NewPolygon = Nothing
+
+                        ButtonMenu = Nothing
+                        btnClipRectangular.Enabled = False
+                        btnClipPolygon.Enabled = False
+                    Else
+                        NewPolygon.Add(e.Location)
+                        'Add the point into list box
+                        listBox1.Items.Add(NewPoint)
+                        i = 0
+                        i += 1
                     End If
                 End If
             End If
@@ -95,7 +108,9 @@ Public Class MainWindow
                 listBox1.Items.Add("Clipping")
             End If
             'MsgBox(NewPolygon.Count & " " & NewPoint.X & ", " & NewPoint.Y)
-            TempPoint = NewPoint
+
+            If (ButtonMenu = "RClipping") Then TempPoint = NewPoint
+
             listBox1.Items.Add(NewPoint)
 
 

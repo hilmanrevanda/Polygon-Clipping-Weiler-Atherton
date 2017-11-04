@@ -100,6 +100,7 @@ Partial Class MainWindow
         '
         'btnClipPolygon
         '
+        Me.btnClipPolygon.Enabled = False
         Me.btnClipPolygon.Location = New System.Drawing.Point(6, 60)
         Me.btnClipPolygon.Name = "btnClipPolygon"
         Me.btnClipPolygon.Size = New System.Drawing.Size(75, 36)
@@ -109,6 +110,7 @@ Partial Class MainWindow
         '
         'btnClipRectangular
         '
+        Me.btnClipRectangular.Enabled = False
         Me.btnClipRectangular.Location = New System.Drawing.Point(6, 19)
         Me.btnClipRectangular.Name = "btnClipRectangular"
         Me.btnClipRectangular.Size = New System.Drawing.Size(75, 35)
