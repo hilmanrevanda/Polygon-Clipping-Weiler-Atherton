@@ -11,10 +11,14 @@ Public Class MainWindow
     ' Ambil nilai NewPolygon pada line 24 sebelum di hapus untuk record coordinate setiap poligon guna pengaplikasian ke rumus nantinya, atau ada cara lain?
     Private NewPolygon As List(Of Point) = Nothing
 
+    Private NewRect As List(Of Point) = Nothing
+
     Private Clockwise As Boolean = Nothing
 
     ' The current mouse position while drawing a new polygon.
     Private NewPoint As Point
+
+    Private TempPoint As Point
 
     ' Start or continue drawing a new polygon.
     Private Sub picCanvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseDown
@@ -35,45 +39,70 @@ Public Class MainWindow
                         NewPolygon = Nothing
                     End If
                 ElseIf ButtonMenu = "RClipping" Then
-                    If (i = 4) And IsPolygonConvex(NewPolygon) Then
-                        'NewPolygon store coordinate
-                        Polygons.Add(NewPolygon)
-                        'Remove current polygon coordinate
-                        NewPolygon = Nothing
-                    Else
-                        MsgBox("Only for rectangular clipping!")
-                        NewPolygon = Nothing
-                    End If
+                    'test
                 End If
             Else
                 ' Add a point to this polygon.
                 If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
+                    '02 22
+                    '00 20
+                    Dim A As Point
+                    Dim B As Point
+                    Dim C As Point
 
-                    NewPolygon.Add(e.Location)
+                    A = TempPoint
+                    B = e.Location
+
+                    C.X = B.X
+                    C.Y = A.Y
+
+                    NewPolygon.Add(C)
                     'Add the point into list box
                     listBox1.Items.Add(NewPoint)
                     i = 0
                     i += 1
 
+                    NewPolygon.Add(B)
+                    'Add the point into list box
+                    listBox1.Items.Add(NewPoint)
+                    i = 0
+                    i += 1
+
+                    C.X = A.X
+                    C.Y = B.Y
+
+                    NewPolygon.Add(C)
+                    'Add the point into list box
+                    listBox1.Items.Add(NewPoint)
+                    i = 0
+                    i += 1
+
+                    If ButtonMenu = "RClipping" Then
+                        'NewPolygon store coordinaten coordinate
+                        Polygons.Add(NewPolygon)
+                        NewPolygon = Nothing
+                    End If
                 End If
             End If
-            Else
-                ' Start a new polygon.
-                NewPolygon = New List(Of Point)()
-                NewPoint = e.Location
-                NewPolygon.Add(e.Location)
-                If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
-                    listBox1.Items.Add("Polygon")
-                ElseIf ButtonMenu = "RClipping" Then
-                    listBox1.Items.Add("Clipping")
-                End If
-                listBox1.Items.Add(NewPoint)
-
-
+        Else
+            ' Start a new polygon.
+            NewPolygon = New List(Of Point)()
+            NewPoint = e.Location
+            NewPolygon.Add(e.Location)
+            If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
+                listBox1.Items.Add("Polygon")
+            ElseIf ButtonMenu = "RClipping" Then
+                listBox1.Items.Add("Clipping")
             End If
+            'MsgBox(NewPolygon.Count & " " & NewPoint.X & ", " & NewPoint.Y)
+            TempPoint = NewPoint
+            listBox1.Items.Add(NewPoint)
 
-            ' Redraw.
-            picCanvas.Invalidate()
+
+        End If
+
+        ' Redraw.
+        picCanvas.Invalidate()
 
     End Sub
 
