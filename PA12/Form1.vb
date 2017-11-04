@@ -63,13 +63,13 @@ Public Class MainWindow
 
                         NewPolygon.Add(C)
                         'Add the point into list box
-                        listBox1.Items.Add(NewPoint)
+                        listBox1.Items.Add(C)
                         i = 0
                         i += 1
 
                         NewPolygon.Add(B)
                         'Add the point into list box
-                        listBox1.Items.Add(NewPoint)
+                        listBox1.Items.Add(B)
                         i = 0
                         i += 1
 
@@ -78,7 +78,7 @@ Public Class MainWindow
 
                         NewPolygon.Add(C)
                         'Add the point into list box
-                        listBox1.Items.Add(NewPoint)
+                        listBox1.Items.Add(C)
                         i = 0
                         i += 1
                         'NewPolygon store coordinaten coordinate
