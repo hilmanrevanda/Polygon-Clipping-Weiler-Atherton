@@ -21,7 +21,7 @@ Public Class MainWindow
     Private TempPoint As Point
 
     'test
-    Dim lst As New LinkedList(Of LinkendL)
+    Dim lst As New LinkendL
 
     ' Start or continue drawing a new polygon.
     Private Sub picCanvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseDown
@@ -284,21 +284,63 @@ Public Class MainWindow
 
         Dim B As Integer
         Dim T As Integer
+        Dim TempE As Integer = Nothing
+        Dim TempL As Integer = Nothing
+        Dim M As Integer
+        Dim N As Point
 
         For A = 0 To Polygon.Count - 1
             B = NextPoint(A, Polygon.Count)
 
             For S = 0 To Rect.Count - 1
                 T = NextPoint(S, Rect.Count)
-
+                N = Normal(Rect(S), Rect(T))
                 If (Not InsidePoint(Rect(S), Rect(T), Polygon(B)) And InsidePoint(Rect(S), Rect(T), Polygon(A))) Then 'False and True means out in
-                    'leaving
+                    'EN
                     MsgBox("edge " & S & T & " with " & A & B & " is EN")
+                    If TempE = Nothing Then
+                        TempE = Tis(Polygon(A), Polygon(B), Rect(S), N)
+                    Else
+                        M = Tis(Polygon(A), Polygon(B), Rect(S), N)
+                        If TempE < M Then
+                            TempE = M
+                        End If
+                    End If
                 ElseIf (InsidePoint(Rect(S), Rect(T), Polygon(B)) And Not InsidePoint(Rect(S), Rect(T), Polygon(A))) Then 'true and false means in out
-                    'entering
+                    'LEAV
                     MsgBox("edge " & S & T & " with " & A & B & " is LEAV")
+                    If TempL = Nothing Then
+                        TempL = Tis(Polygon(A), Polygon(B), Rect(S), N)
+                    Else
+                        M = Tis(Polygon(A), Polygon(B), Rect(S), N)
+                        If TempL > M Then
+                            TempL = M
+                        End If
+                    End If
                 Else
-                    MsgBox("rejected")
+                    MsgBox("rejected!")
+                End If
+
+                MsgBox(S)
+
+                If S = Rect.Count - 1 Then
+                    If TempE = Nothing Then
+                        MsgBox("cuma ada leave")
+                        TempE = Nothing
+                        TempL = Nothing
+                    ElseIf TempL = Nothing Then
+                        MsgBox("cuma ada en")
+                        TempE = Nothing
+                        TempL = Nothing
+                    ElseIf TempE > TempL Then
+                        MsgBox("rejected because TempE > TempL t: " & TempE & " " & TempL)
+                        TempE = Nothing
+                        TempL = Nothing
+                    ElseIf TempE < TempL Then
+                        MsgBox("ACC t: " & TempE & " " & TempL)
+                        TempE = Nothing
+                        TempL = Nothing
+                    End If
                 End If
                 'if t max < t min leaving then acc
             Next
@@ -329,6 +371,20 @@ Public Class MainWindow
         End If
     End Function
 
+    Function Normal(WA As Point, WB As Point) As Point
+        Dim N As Point
+
+        N.X = WB.Y - WA.Y
+        N.Y = WB.X - WA.X
+        If (Clockwise) Then
+            N.Y = N.Y * -1
+        ElseIf (Not Clockwise) Then
+            N.X = N.X * -1
+        End If
+
+        Return N
+    End Function
+
     Function NextPoint(Point As Integer, Total As Integer) As Integer
         If Point + 1 = Total Then
             Return 0
@@ -337,13 +393,7 @@ Public Class MainWindow
         End If
     End Function
 
-    'coba linkend list
-    Sub test()
-        lst.AddFirst(New LinkendL With {.Value = "Ziggy"})
-    End Sub
-End Class
-
-Friend Class LinkendL
-    Public Property Value As String
-    Public Property nextL As LinkendL = Nothing
+    Function Tis(A As Point, B As Point, P As Point, N As Point) As Integer
+        Return (((P.X - A.X) * N.X) + ((P.Y - A.Y) * N.Y)) / (((B.X - A.X) * N.X) + ((B.Y - A.Y) * N.Y))
+    End Function
 End Class
