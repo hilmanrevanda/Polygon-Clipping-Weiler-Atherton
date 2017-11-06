@@ -300,8 +300,10 @@ Public Class MainWindow
                     MsgBox("edge " & S & T & " with " & A & B & " is EN")
                     If TempE = Nothing Then
                         TempE = Tis(Polygon(A), Polygon(B), Rect(S), N)
+                        'masukin ke list
                     Else
                         M = Tis(Polygon(A), Polygon(B), Rect(S), N)
+                        'masukin ke list
                         If TempE < M Then
                             TempE = M
                         End If
@@ -311,8 +313,10 @@ Public Class MainWindow
                     MsgBox("edge " & S & T & " with " & A & B & " is LEAV")
                     If TempL = Nothing Then
                         TempL = Tis(Polygon(A), Polygon(B), Rect(S), N)
+                        'masukin ke list
                     Else
                         M = Tis(Polygon(A), Polygon(B), Rect(S), N)
+                        'masukin ke list
                         If TempL > M Then
                             TempL = M
                         End If
@@ -326,21 +330,17 @@ Public Class MainWindow
                 If S = Rect.Count - 1 Then
                     If TempE = Nothing Then
                         MsgBox("cuma ada leave")
-                        TempE = Nothing
-                        TempL = Nothing
                     ElseIf TempL = Nothing Then
                         MsgBox("cuma ada en")
-                        TempE = Nothing
-                        TempL = Nothing
                     ElseIf TempE > TempL Then
                         MsgBox("rejected because TempE > TempL t: " & TempE & " " & TempL)
-                        TempE = Nothing
-                        TempL = Nothing
+                        'kalau reject destroy list
                     ElseIf TempE < TempL Then
                         MsgBox("ACC t: " & TempE & " " & TempL)
-                        TempE = Nothing
-                        TempL = Nothing
+                        'acc: short list, masukin ke linked list
                     End If
+                    TempE = Nothing
+                    TempL = Nothing
                 End If
                 'if t max < t min leaving then acc
             Next
@@ -353,13 +353,7 @@ Public Class MainWindow
         Dim N As Point
         Dim D As Point
 
-        N.X = WB.Y - WA.Y
-        N.Y = WB.X - WA.X
-        If (Clockwise) Then
-            N.Y = N.Y * -1
-        ElseIf (Not Clockwise) Then
-            N.X = N.X * -1
-        End If
+        N = Normal(WA, WB)
 
         D.X = (S.X - WA.X) * N.X
         D.Y = (S.Y - WA.Y) * N.Y
