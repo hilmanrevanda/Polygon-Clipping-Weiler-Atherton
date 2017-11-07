@@ -20,9 +20,6 @@ Public Class MainWindow
 
     Private TempPoint As Point
 
-    'test
-    Dim lst As New LinkendL
-
     ' Start or continue drawing a new polygon.
     Private Sub picCanvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseDown
 
@@ -224,7 +221,21 @@ Public Class MainWindow
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-
+        Dim ListRect As New List(Of LinkedLValue)
+        Dim Head As LinkedLValue = New LinkedLValue(Nothing)
+        Dim Polygon As List(Of Point) = Polygons(0)
+        Dim Temp As Point
+        For i = 0 To Polygon.Count - 1
+            Temp = Polygon(i)
+            ListRect.Add(New LinkedLValue(Temp))
+            If i = 0 Then
+                Head = ListRect(i)
+                ListRect(i).NextList = Head
+            Else
+                ListRect(i - 1).NextList = ListRect(i)
+                ListRect(i).NextList = Head
+            End If
+        Next
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -284,65 +295,35 @@ Public Class MainWindow
 
         Dim B As Integer
         Dim T As Integer
-        Dim TempE As Integer = Nothing
-        Dim TempL As Integer = Nothing
-        Dim M As Integer
-        Dim N As Point
+        Dim NP As Point
+        Dim NW As Point
 
         For A = 0 To Polygon.Count - 1
             B = NextPoint(A, Polygon.Count)
 
             For S = 0 To Rect.Count - 1
                 T = NextPoint(S, Rect.Count)
-                N = Normal(Rect(S), Rect(T))
+                NW = Normal(Rect(S), Rect(T))
+                NP = Normal(Polygon(A), Polygon(B))
                 If (Not InsidePoint(Rect(S), Rect(T), Polygon(B)) And InsidePoint(Rect(S), Rect(T), Polygon(A))) Then 'False and True means out in
                     'EN
                     MsgBox("edge " & S & T & " with " & A & B & " is EN")
-                    If TempE = Nothing Then
-                        TempE = Tis(Polygon(A), Polygon(B), Rect(S), N)
-                        'masukin ke list
+                    If Tis(Polygon(A), Polygon(B), Rect(S), NW) And Tis(Rect(S), Rect(T), Polygon(A), NP) Then
+                        MsgBox("yay")
                     Else
-                        M = Tis(Polygon(A), Polygon(B), Rect(S), N)
-                        'masukin ke list
-                        If TempE < M Then
-                            TempE = M
-                        End If
+                        MsgBox("eh bubar2")
                     End If
                 ElseIf (InsidePoint(Rect(S), Rect(T), Polygon(B)) And Not InsidePoint(Rect(S), Rect(T), Polygon(A))) Then 'true and false means in out
                     'LEAV
                     MsgBox("edge " & S & T & " with " & A & B & " is LEAV")
-                    If TempL = Nothing Then
-                        TempL = Tis(Polygon(A), Polygon(B), Rect(S), N)
-                        'masukin ke list
+                    If Tis(Polygon(A), Polygon(B), Rect(S), NW) And Tis(Rect(S), Rect(T), Polygon(A), NP) Then
+                        MsgBox("yay")
                     Else
-                        M = Tis(Polygon(A), Polygon(B), Rect(S), N)
-                        'masukin ke list
-                        If TempL > M Then
-                            TempL = M
-                        End If
+                        MsgBox("eh bubar2")
                     End If
                 Else
                     MsgBox("rejected!")
                 End If
-
-                MsgBox(S)
-
-                If S = Rect.Count - 1 Then
-                    If TempE = Nothing Then
-                        MsgBox("cuma ada leave")
-                    ElseIf TempL = Nothing Then
-                        MsgBox("cuma ada en")
-                    ElseIf TempE > TempL Then
-                        MsgBox("rejected because TempE > TempL t: " & TempE & " " & TempL)
-                        'kalau reject destroy list
-                    ElseIf TempE < TempL Then
-                        MsgBox("ACC t: " & TempE & " " & TempL)
-                        'acc: short list, masukin ke linked list
-                    End If
-                    TempE = Nothing
-                    TempL = Nothing
-                End If
-                'if t max < t min leaving then acc
             Next
         Next
 
@@ -390,4 +371,38 @@ Public Class MainWindow
     Function Tis(A As Point, B As Point, P As Point, N As Point) As Integer
         Return (((P.X - A.X) * N.X) + ((P.Y - A.Y) * N.Y)) / (((B.X - A.X) * N.X) + ((B.Y - A.Y) * N.Y))
     End Function
+
+    Function TisAcc(X As Integer) As Boolean
+        If X >= 0 And X <= 1 Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    'ShowList(Head, Head) just to show linkedlist
+    Sub ShowList(Start As LinkedLValue, Current As LinkedLValue)
+        MsgBox(Current.Point.ToString)
+        If Current.NextList IsNot Start Then
+            ShowList(Start, Current.NextList)
+        End If
+    End Sub
+End Class
+
+Public Class LinkedLValue
+    Public Point As Point
+    Public NextList As LinkedLValue = Nothing
+
+    Sub New(e As Point)
+        Me.Point = e
+    End Sub
+End Class
+
+Public Class LinkedLIntersection
+    Public Point As Point
+    Public NextList As LinkedLValue = Nothing
+
+    Sub New(e As Point)
+        Me.Point = e
+    End Sub
 End Class
