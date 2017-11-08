@@ -215,6 +215,12 @@ Public Class MainWindow
         listBox1.Items.Clear()
         Polygons.Clear()
         picCanvas.Image = Nothing
+
+        btnDelete.Enabled = False
+        btnSave.Enabled = False
+        btnRefresh.Enabled = False
+        btnClipRectangular.Enabled = False
+        btnClipPolygon.Enabled = False
     End Sub
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
