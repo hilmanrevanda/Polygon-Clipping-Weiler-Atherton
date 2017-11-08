@@ -90,8 +90,12 @@ Public Class MainWindow
                         btnClipPolygon.Enabled = False
 
                         Clockwise = True
-
+                        'masukin semuanya jadi linked list
+                        Dim test As List(Of List(Of LinkedLValue)) = New List(Of List(Of LinkedLValue))
+                        test = PolygonstoLinkedList()
+                        'exe clippingpoint function
                         ClippingPoint(Polygons(0), Polygons(1))
+
                     Else
                         NewPolygon.Add(e.Location)
                         'Add the point into list box
@@ -221,21 +225,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        Dim ListRect As New List(Of LinkedLValue)
-        Dim Head As LinkedLValue = New LinkedLValue(Nothing)
-        Dim Polygon As List(Of Point) = Polygons(0)
-        Dim Temp As Point
-        For i = 0 To Polygon.Count - 1
-            Temp = Polygon(i)
-            ListRect.Add(New LinkedLValue(Temp))
-            If i = 0 Then
-                Head = ListRect(i)
-                ListRect(i).NextList = Head
-            Else
-                ListRect(i - 1).NextList = ListRect(i)
-                ListRect(i).NextList = Head
-            End If
-        Next
+
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -308,7 +298,7 @@ Public Class MainWindow
                 If (Not InsidePoint(Rect(S), Rect(T), Polygon(B)) And InsidePoint(Rect(S), Rect(T), Polygon(A))) Then 'False and True means out in
                     'EN
                     MsgBox("edge " & S & T & " with " & A & B & " is EN")
-                    If Tis(Polygon(A), Polygon(B), Rect(S), NW) And Tis(Rect(S), Rect(T), Polygon(A), NP) Then
+                    If TisAcc(Tis(Polygon(A), Polygon(B), Rect(S), NW)) And TisAcc(Tis(Rect(S), Rect(T), Polygon(A), NP)) Then
                         MsgBox("yay")
                     Else
                         MsgBox("eh bubar2")
@@ -316,7 +306,7 @@ Public Class MainWindow
                 ElseIf (InsidePoint(Rect(S), Rect(T), Polygon(B)) And Not InsidePoint(Rect(S), Rect(T), Polygon(A))) Then 'true and false means in out
                     'LEAV
                     MsgBox("edge " & S & T & " with " & A & B & " is LEAV")
-                    If Tis(Polygon(A), Polygon(B), Rect(S), NW) And Tis(Rect(S), Rect(T), Polygon(A), NP) Then
+                    If TisAcc(Tis(Polygon(A), Polygon(B), Rect(S), NW)) And TisAcc(Tis(Rect(S), Rect(T), Polygon(A), NP)) Then
                         MsgBox("yay")
                     Else
                         MsgBox("eh bubar2")
@@ -387,6 +377,36 @@ Public Class MainWindow
             ShowList(Start, Current.NextList)
         End If
     End Sub
+
+    Function PolygonstoLinkedList() As List(Of List(Of LinkedLValue))
+        Dim ListofPolygonLinkedList As List(Of List(Of LinkedLValue)) = New List(Of List(Of LinkedLValue))
+        Dim Temp As List(Of LinkedLValue)
+        For Each Polygon As List(Of Point) In Polygons
+            Temp = PolygontoLinkedList(Polygon)
+            ListofPolygonLinkedList.Add(Temp)
+        Next
+        Return ListofPolygonLinkedList
+    End Function
+
+    Function PolygontoLinkedList(JustPolygon As List(Of Point)) As List(Of LinkedLValue)
+        Dim ListRect As New List(Of LinkedLValue)
+        Dim Head As LinkedLValue = New LinkedLValue(Nothing)
+        Dim Polygon As List(Of Point) = JustPolygon
+        Dim Temp As Point
+        For i = 0 To Polygon.Count - 1
+            Temp = Polygon(i)
+            ListRect.Add(New LinkedLValue(Temp))
+            If i = 0 Then
+                Head = ListRect(i)
+                ListRect(i).NextList = Head
+            Else
+                ListRect(i - 1).NextList = ListRect(i)
+                ListRect(i).NextList = Head
+            End If
+        Next
+
+        Return ListRect
+    End Function
 End Class
 
 Public Class LinkedLValue
