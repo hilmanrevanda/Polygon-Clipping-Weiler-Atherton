@@ -40,6 +40,9 @@ Public Class MainWindow
 
                         btnClipRectangular.Enabled = True
                         btnClipPolygon.Enabled = True
+                        btnDelete.Enabled = True
+                        btnSave.Enabled = True
+                        btnRefresh.Enabled = True
 
                     End If
                 ElseIf ButtonMenu = "RClipping" Then
@@ -180,7 +183,9 @@ Public Class MainWindow
     End Sub
 
     Private Sub MainWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        btnDelete.Enabled = False
+        btnSave.Enabled = False
+        btnRefresh.Enabled = False
 
     End Sub
 
