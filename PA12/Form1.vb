@@ -221,6 +221,8 @@ Public Class MainWindow
         btnDelete.Enabled = False
         btnSave.Enabled = False
         btnRefresh.Enabled = False
+        btnClipRectangular.Enabled = False
+        btnClipPolygon.Enabled = False
 
     End Sub
 
