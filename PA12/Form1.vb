@@ -251,7 +251,17 @@ Public Class MainWindow
         Dim bmp As New Bitmap(picCanvas.Width, picCanvas.Height)
         picCanvas.DrawToBitmap(bmp, New Rectangle(0, 0, picCanvas.Width, picCanvas.Height))
         bmp.Save("C:\Users\User\Documents\Visual Studio 2017\Projects\PA12\PA12\output.png", Imaging.ImageFormat.Png)
-        MsgBox("Saved")
+        MsgBox("Saved as Bitmap")
+
+        Dim W As IO.StreamWriter
+        Dim i As Integer
+        W = New IO.StreamWriter("C:\Users\User\Documents\Visual Studio 2017\Projects\PA12\PA12\test.txt")
+
+        For i = 0 To listBox1.Items.Count - 1
+            W.WriteLine(listBox1.Items.Item(i))
+        Next
+        W.Close()
+        MsgBox("Saved as text")
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
