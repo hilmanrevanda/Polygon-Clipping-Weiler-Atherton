@@ -242,7 +242,21 @@ Public Class MainWindow
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+        'Save as BMP-file
+        Dim bmp As New Bitmap(picCanvas.Width, picCanvas.Height)
+        picCanvas.DrawToBitmap(bmp, New Rectangle(0, 0, picCanvas.Width, picCanvas.Height))
+        bmp.Save("C:\Users\User\Documents\Visual Studio 2017\Projects\PA12\PA12\output.png", Imaging.ImageFormat.Png)
+        MsgBox("Saved as Bitmap")
 
+        Dim W As IO.StreamWriter
+        Dim i As Integer
+        W = New IO.StreamWriter("C:\Users\User\Documents\Visual Studio 2017\Projects\PA12\PA12\test.txt")
+
+        For i = 0 To listBox1.Items.Count - 1
+            W.WriteLine(listBox1.Items.Item(i))
+        Next
+        W.Close()
+        MsgBox("Saved as text")
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -330,7 +344,7 @@ Public Class MainWindow
                     If TisAcc(Tis(Polygon(A), Polygon(B), Rect(S), NW)) And TisAcc(Tis(Rect(S), Rect(T), Polygon(A), NP)) Then
                         TempPoint = SetTPoint(Polygon(A), Polygon(B), Tis(Polygon(A), Polygon(B), Rect(S), NW))
                         Status = "EN"
-
+                        MsgBox("en")
                         TempLinkedLIntersection = New LinkedLValue
                         TempLinkedLIntersection.NewI(Tis(Polygon(A), Polygon(B), Rect(S), NW),
                                                      ToPoint(A, B),
