@@ -26,110 +26,112 @@ Public Class MainWindow
 
     ' Start or continue drawing a new polygon.
     Private Sub picCanvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseDown
+        If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Or ButtonMenu = "RClipping" Then
+            ' See if we are already drawing a polygon.
+            If (NewPolygon IsNot Nothing) Then
 
-        ' See if we are already drawing a polygon.
-        If (NewPolygon IsNot Nothing) Then
+                ' We are already drawing a polygon.
+                ' If it's the right mouse button, finish this polygon.
+                If (e.Button = MouseButtons.Right) Then
+                    ' Finish this polygon.
 
-            ' We are already drawing a polygon.
-            ' If it's the right mouse button, finish this polygon.
-            If (e.Button = MouseButtons.Right) Then
-                ' Finish this polygon.
+                    If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
+                        If (NewPolygon.Count > 2) Then
+                            'NewPolygon store coordinate
+                            Polygons.Add(NewPolygon)
+                            'Remove current polygon coordinate
+                            NewPolygon = Nothing
 
-                If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
-                    If (NewPolygon.Count > 2) Then
-                        'NewPolygon store coordinate
-                        Polygons.Add(NewPolygon)
-                        'Remove current polygon coordinate
-                        NewPolygon = Nothing
+                            btnClipRectangular.Enabled = True
+                            btnClipPolygon.Enabled = True
+                            btnDelete.Enabled = True
+                            btnSave.Enabled = True
+                            btnRefresh.Enabled = True
 
-                        btnClipRectangular.Enabled = True
-                        btnClipPolygon.Enabled = True
-                        btnDelete.Enabled = True
-                        btnSave.Enabled = True
-                        btnRefresh.Enabled = True
-
+                        End If
+                    ElseIf ButtonMenu = "RClipping" Then
+                        'test
                     End If
-                ElseIf ButtonMenu = "RClipping" Then
-                    'test
+                Else
+                    ' Add a point to this polygon.
+                    If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
+                        If ButtonMenu = "RClipping" Then
+                            '02 22
+                            '00 20
+                            Dim A As Point
+                            Dim B As Point
+                            Dim C As Point
+
+                            A = TempPoint
+                            B = e.Location
+
+                            C.X = B.X
+                            C.Y = A.Y
+
+                            NewPolygon.Add(C)
+                            'Add the point into list box
+                            listBox1.Items.Add(C)
+                            i = 0
+                            i += 1
+
+                            NewPolygon.Add(B)
+                            'Add the point into list box
+                            listBox1.Items.Add(B)
+                            i = 0
+                            i += 1
+
+                            C.X = A.X
+                            C.Y = B.Y
+
+                            NewPolygon.Add(C)
+                            'Add the point into list box
+                            listBox1.Items.Add(C)
+                            i = 0
+                            i += 1
+                            'NewPolygon store coordinaten coordinate
+                            Polygons.Add(NewPolygon)
+                            NewPolygon = Nothing
+
+                            ButtonMenu = Nothing
+                            btnClipRectangular.Enabled = False
+                            btnClipPolygon.Enabled = False
+
+                            Clockwise = True
+                            'masukin semuanya jadi linked list
+                            Dim test As List(Of List(Of LinkedLValue)) = New List(Of List(Of LinkedLValue))
+                            test = PolygonstoLinkedList()
+                            'exe clippingpoint function
+                            ClippingPoint(Polygons(0), Polygons(1))
+
+                        Else
+                            NewPolygon.Add(e.Location)
+                            'Add the point into list box
+                            listBox1.Items.Add(NewPoint)
+                            i = 0
+                            i += 1
+                        End If
+                    End If
                 End If
             Else
-                ' Add a point to this polygon.
-                If (NewPolygon(NewPolygon.Count - 1) <> e.Location) Then
-                    If ButtonMenu = "RClipping" Then
-                        '02 22
-                        '00 20
-                        Dim A As Point
-                        Dim B As Point
-                        Dim C As Point
-
-                        A = TempPoint
-                        B = e.Location
-
-                        C.X = B.X
-                        C.Y = A.Y
-
-                        NewPolygon.Add(C)
-                        'Add the point into list box
-                        listBox1.Items.Add(C)
-                        i = 0
-                        i += 1
-
-                        NewPolygon.Add(B)
-                        'Add the point into list box
-                        listBox1.Items.Add(B)
-                        i = 0
-                        i += 1
-
-                        C.X = A.X
-                        C.Y = B.Y
-
-                        NewPolygon.Add(C)
-                        'Add the point into list box
-                        listBox1.Items.Add(C)
-                        i = 0
-                        i += 1
-                        'NewPolygon store coordinaten coordinate
-                        Polygons.Add(NewPolygon)
-                        NewPolygon = Nothing
-
-                        ButtonMenu = Nothing
-                        btnClipRectangular.Enabled = False
-                        btnClipPolygon.Enabled = False
-
-                        Clockwise = True
-                        'masukin semuanya jadi linked list
-                        Dim test As List(Of List(Of LinkedLValue)) = New List(Of List(Of LinkedLValue))
-                        test = PolygonstoLinkedList()
-                        'exe clippingpoint function
-                        ClippingPoint(Polygons(0), Polygons(1))
-
-                    Else
-                        NewPolygon.Add(e.Location)
-                        'Add the point into list box
-                        listBox1.Items.Add(NewPoint)
-                        i = 0
-                        i += 1
-                    End If
+                ' Start a new polygon.
+                NewPolygon = New List(Of Point)()
+                NewPoint = e.Location
+                NewPolygon.Add(e.Location)
+                If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
+                    listBox1.Items.Add("Polygon")
+                ElseIf ButtonMenu = "RClipping" Then
+                    listBox1.Items.Add("Clipping")
                 End If
+                'MsgBox(NewPolygon.Count & " " & NewPoint.X & ", " & NewPoint.Y)
+
+                If (ButtonMenu = "RClipping") Then TempPoint = NewPoint
+
+                listBox1.Items.Add(NewPoint)
+
+
             End If
-        Else
-            ' Start a new polygon.
-            NewPolygon = New List(Of Point)()
-            NewPoint = e.Location
-            NewPolygon.Add(e.Location)
-            If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
-                listBox1.Items.Add("Polygon")
-            ElseIf ButtonMenu = "RClipping" Then
-                listBox1.Items.Add("Clipping")
-            End If
-            'MsgBox(NewPolygon.Count & " " & NewPoint.X & ", " & NewPoint.Y)
-
-            If (ButtonMenu = "RClipping") Then TempPoint = NewPoint
-
-            listBox1.Items.Add(NewPoint)
-
-
         End If
+
 
         ' Redraw.
         picCanvas.Invalidate()
@@ -286,7 +288,7 @@ Public Class MainWindow
             Clockwise = False
             Return True
         Else
-            MsgBox("Not a convex cliping")
+            MsgBox("Not a convex clipping")
             Return False
         End If
     End Function
