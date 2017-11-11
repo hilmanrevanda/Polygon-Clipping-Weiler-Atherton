@@ -13,6 +13,10 @@ Public Class MainWindow
 
     Private NewRect As List(Of Point) = Nothing
 
+    Public ListofPolygonsLinkedList As List(Of List(Of LinkedLValue)) = Nothing
+
+    Private Intersection As List(Of LinkedLValue) = Nothing
+
     Private Clockwise As Boolean = Nothing
 
     ' The current mouse position while drawing a new polygon.
@@ -128,6 +132,7 @@ Public Class MainWindow
             End If
         End If
 
+
         ' Redraw.
         picCanvas.Invalidate()
 
@@ -188,7 +193,6 @@ Public Class MainWindow
         btnSave.Enabled = False
         btnRefresh.Enabled = False
 
-
     End Sub
 
     Private Sub picCanvas_Click(sender As Object, e As EventArgs) Handles picCanvas.Click
@@ -223,7 +227,6 @@ Public Class MainWindow
         btnRefresh.Enabled = False
         btnClipRectangular.Enabled = False
         btnClipPolygon.Enabled = False
-
     End Sub
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
@@ -285,7 +288,7 @@ Public Class MainWindow
             Clockwise = False
             Return True
         Else
-            MsgBox("Not a convex cliping")
+            MsgBox("Not a convex clipping")
             Return False
         End If
     End Function
