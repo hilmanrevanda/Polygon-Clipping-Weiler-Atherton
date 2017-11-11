@@ -2,6 +2,8 @@
 
 Public Class MainWindow
     Dim i As Integer
+
+
     'To know which button chosen.
     Private ButtonMenu As String
     ' Each polygon is represented by a List(Of Point).
@@ -189,6 +191,8 @@ Public Class MainWindow
     End Sub
 
     Private Sub MainWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+
         btnDelete.Enabled = False
         btnSave.Enabled = False
         btnRefresh.Enabled = False
@@ -222,6 +226,7 @@ Public Class MainWindow
         Polygons.Clear()
         picCanvas.Image = Nothing
 
+
         btnDelete.Enabled = False
         btnSave.Enabled = False
         btnRefresh.Enabled = False
@@ -242,7 +247,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-
+        'Save as BMP-file
+        Dim bmp As New Bitmap(picCanvas.Width, picCanvas.Height)
+        picCanvas.DrawToBitmap(bmp, New Rectangle(0, 0, picCanvas.Width, picCanvas.Height))
+        bmp.Save("C:\Users\User\Documents\Visual Studio 2017\Projects\PA12\PA12\output.png", Imaging.ImageFormat.Png)
+        MsgBox("Saved")
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -324,7 +333,7 @@ Public Class MainWindow
                     If TisAcc(Tis(Polygon(A), Polygon(B), Rect(S), NW)) And TisAcc(Tis(Rect(S), Rect(T), Polygon(A), NP)) Then
                         TempPoint = SetTPoint(Polygon(A), Polygon(B), Tis(Polygon(A), Polygon(B), Rect(S), NW))
                         Status = "EN"
-
+                        MsgBox("en")
                         TempLinkedLIntersection = New LinkedLValue
                         TempLinkedLIntersection.NewI(Tis(Polygon(A), Polygon(B), Rect(S), NW),
                                                      ToPoint(A, B),
@@ -345,7 +354,7 @@ Public Class MainWindow
                     If TisAcc(Tis(Polygon(A), Polygon(B), Rect(S), NW)) And TisAcc(Tis(Rect(S), Rect(T), Polygon(A), NP)) Then
                         TempPoint = SetTPoint(Polygon(A), Polygon(B), Tis(Polygon(A), Polygon(B), Rect(S), NW))
                         Status = "LEAV"
-
+                        MsgBox("Leav")
                         TempLinkedLIntersection = New LinkedLValue
                         TempLinkedLIntersection.NewI(Tis(Polygon(A), Polygon(B), Rect(S), NW),
                                                      ToPoint(A, B),
@@ -358,8 +367,7 @@ Public Class MainWindow
                     Else
                         'MsgBox("eh bubar2")
                     End If
-                Else
-                    'MsgBox("rejected!")
+
                 End If
             Next
         Next
@@ -470,7 +478,7 @@ Public Class MainWindow
                 If isPolygon Then
                     ListRect(i).NextP = Head
                 Else
-                    ListRect(i).Nextw = Head
+                    ListRect(i).NextW = Head
                 End If
             Else
                 If isPolygon Then
