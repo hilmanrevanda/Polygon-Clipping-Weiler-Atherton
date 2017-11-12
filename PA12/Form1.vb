@@ -98,8 +98,8 @@ Public Class MainWindow
 
                             Clockwise = True
                             'masukin semuanya jadi linked list
-                            Dim test As List(Of List(Of LinkedLValue)) = New List(Of List(Of LinkedLValue))
-                            test = PolygonstoLinkedList()
+                            ListofPolygonsLinkedList = New List(Of List(Of LinkedLValue))
+                            ListofPolygonsLinkedList = PolygonstoLinkedList()
                             'exe clippingpoint function
                             ClippingPoint(Polygons(0), Polygons(1))
 
@@ -118,6 +118,10 @@ Public Class MainWindow
                 NewPoint = e.Location
                 NewPolygon.Add(e.Location)
                 If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
+                    If ButtonMenu = "SPolygon" Then
+                        listBox1.Items.Clear()
+                        Polygons.Clear()
+                    End If
                     listBox1.Items.Add("Polygon")
                 ElseIf ButtonMenu = "RClipping" Then
                     listBox1.Items.Add("Clipping")
@@ -221,6 +225,12 @@ Public Class MainWindow
         listBox1.Items.Clear()
         Polygons.Clear()
         picCanvas.Image = Nothing
+        NewPolygon = Nothing
+        NewRect = Nothing
+        ListofPolygonsLinkedList.Clear()
+        Intersection.Clear()
+
+
 
         btnDelete.Enabled = False
         btnSave.Enabled = False
@@ -242,7 +252,21 @@ Public Class MainWindow
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+        'Save as BMP-file
+        Dim bmp As New Bitmap(picCanvas.Width, picCanvas.Height)
+        picCanvas.DrawToBitmap(bmp, New Rectangle(0, 0, picCanvas.Width, picCanvas.Height))
+        bmp.Save("D:\output.png", Imaging.ImageFormat.Png)
+        MsgBox("Saved as Bitmap")
 
+        Dim W As IO.StreamWriter
+        Dim i As Integer
+        W = New IO.StreamWriter("D:\test.txt")
+
+        For i = 0 To listBox1.Items.Count - 1
+            W.WriteLine(listBox1.Items.Item(i))
+        Next
+        W.Close()
+        MsgBox("Saved as text")
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -299,11 +323,20 @@ Public Class MainWindow
 
 
     Function ClippingPoint(Polygon As List(Of Point), Rect As List(Of Point)) As Point
+        Dim count As Integer
+        count = 0
 
         Dim B As Integer
         Dim T As Integer
         Dim NP As Point
         Dim NW As Point
+
+        Dim TempIntersection As New List(Of LinkedLValue)
+        Dim TempLinkedLIntersection As LinkedLValue
+        Dim TempPoint As Point
+        Dim Status As String
+
+        'NewPolygon = New List(Of Point)()
 
         For A = 0 To Polygon.Count - 1
             B = NextPoint(A, Polygon.Count)
@@ -312,28 +345,66 @@ Public Class MainWindow
                 T = NextPoint(S, Rect.Count)
                 NW = Normal(Rect(S), Rect(T))
                 NP = Normal(Polygon(A), Polygon(B))
-                If (Not InsidePoint(Rect(S), Rect(T), Polygon(B)) And InsidePoint(Rect(S), Rect(T), Polygon(A))) Then 'False and True means out in
+
+                If (InsidePoint(Rect(S), Rect(T), Polygon(B)) And InsidePoint(Rect(S), Rect(T), Polygon(A))) Then
+                    count = count + 1
+                ElseIf (Not InsidePoint(Rect(S), Rect(T), Polygon(B)) And InsidePoint(Rect(S), Rect(T), Polygon(A))) Then 'False and True means out in
                     'EN
-                    MsgBox("edge " & S & T & " with " & A & B & " is EN")
+                    'MsgBox("edge " & S & T & " with " & A & B & " is EN")
                     If TisAcc(Tis(Polygon(A), Polygon(B), Rect(S), NW)) And TisAcc(Tis(Rect(S), Rect(T), Polygon(A), NP)) Then
-                        MsgBox("yay")
-                    Else
-                        MsgBox("eh bubar2")
+                        TempPoint = SetTPoint(Polygon(A), Polygon(B), Tis(Polygon(A), Polygon(B), Rect(S), NW))
+                        Status = "EN"
+                        MsgBox("En")
+                        TempLinkedLIntersection = New LinkedLValue
+                        TempLinkedLIntersection.NewI(Tis(Polygon(A), Polygon(B), Rect(S), NW),
+                                                     ToPoint(A, B),
+                                                     Tis(Rect(S), Rect(T), Polygon(A), NP),
+                                                     ToPoint(S, T),
+                                                     TempPoint,
+                                                     Status)
+
+                        TempIntersection.Add(TempLinkedLIntersection)
+
+                        TempIntersection = SetNextPandW(TempIntersection)
                     End If
                 ElseIf (InsidePoint(Rect(S), Rect(T), Polygon(B)) And Not InsidePoint(Rect(S), Rect(T), Polygon(A))) Then 'true and false means in out
                     'LEAV
-                    MsgBox("edge " & S & T & " with " & A & B & " is LEAV")
+                    'MsgBox("edge " & S & T & " with " & A & B & " is LEAV")
                     If TisAcc(Tis(Polygon(A), Polygon(B), Rect(S), NW)) And TisAcc(Tis(Rect(S), Rect(T), Polygon(A), NP)) Then
-                        MsgBox("yay")
-                    Else
-                        MsgBox("eh bubar2")
+                        TempPoint = SetTPoint(Polygon(A), Polygon(B), Tis(Polygon(A), Polygon(B), Rect(S), NW))
+                        Status = "LEAV"
+                        MsgBox("Leav")
+                        TempLinkedLIntersection = New LinkedLValue
+                        TempLinkedLIntersection.NewI(Tis(Polygon(A), Polygon(B), Rect(S), NW),
+                                                     ToPoint(A, B),
+                                                     Tis(Rect(S), Rect(T), Polygon(A), NP),
+                                                     ToPoint(S, T),
+                                                     TempPoint,
+                                                     Status)
+
+                        TempIntersection.Add(TempLinkedLIntersection)
+
+                        TempIntersection = SetNextPandW(TempIntersection)
                     End If
-                Else
-                    MsgBox("rejected!")
                 End If
             Next
         Next
 
+        If Polygon.Count * Rect.Count = count Then
+            MsgBox("Didalamsemua")
+        Else
+            MsgBox(count & " count")
+        End If
+        Intersection = New List(Of LinkedLValue)
+        Intersection = TempIntersection
+
+        MsgBox(Intersection.Count)
+
+        For i = 0 To Intersection.Count - 1
+            MsgBox(Intersection(i).point.ToString)
+        Next
+
+        DrawIntersection()
     End Function
 
     'Fungsi ini menentukan inside atau outside dari saru point saja (Point S)
@@ -368,32 +439,33 @@ Public Class MainWindow
     End Function
 
     Function NextPoint(Point As Integer, Total As Integer) As Integer
-        If Point + 1 = Total Then
-            Return 0
-        Else
-            Return Point + 1
-        End If
+        If Point + 1 = Total Then Return 0
+        Return Point + 1
     End Function
 
-    Function Tis(A As Point, B As Point, P As Point, N As Point) As Integer
-        Return (((P.X - A.X) * N.X) + ((P.Y - A.Y) * N.Y)) / (((B.X - A.X) * N.X) + ((B.Y - A.Y) * N.Y))
+    Function Tis(A As Point, B As Point, P As Point, N As Point) As Decimal
+        Return ((((P.X - A.X) * N.X) + ((P.Y - A.Y) * N.Y)) / (((B.X - A.X) * N.X) + ((B.Y - A.Y) * N.Y))) * 1.0
     End Function
 
-    Function TisAcc(X As Integer) As Boolean
-        If X >= 0 And X <= 1 Then
-            Return True
-        Else
-            Return False
-        End If
+    Function TisAcc(X As Decimal) As Boolean
+        If X >= 0 And X <= 1 Then Return True
+        Return False
     End Function
 
     'ShowList(Head, Head) just to show linkedlist
-    Sub ShowList(Start As LinkedLValue, Current As LinkedLValue)
-        MsgBox(Current.Point.ToString)
-        If Current.NextList IsNot Start Then
-            ShowList(Start, Current.NextList)
-        End If
-    End Sub
+    'Sub ShowList(Start As LinkedLValue, Current As LinkedLValue)
+    '   MsgBox(Current.Point.ToString)
+    'If Current.NextList IsNot Start Then
+    '       ShowList(Start, Current.NextList)
+    'End If
+    'End Sub
+
+    Function ToPoint(X As Integer, Y As Integer) As Point
+        Dim A As Point
+        A.X = X
+        A.Y = Y
+        Return A
+    End Function
 
     Function PolygonstoLinkedList() As List(Of List(Of LinkedLValue))
         Dim ListofPolygonLinkedList As List(Of List(Of LinkedLValue)) = New List(Of List(Of LinkedLValue))
@@ -407,39 +479,202 @@ Public Class MainWindow
 
     Function PolygontoLinkedList(JustPolygon As List(Of Point)) As List(Of LinkedLValue)
         Dim ListRect As New List(Of LinkedLValue)
-        Dim Head As LinkedLValue = New LinkedLValue(Nothing)
+        Dim Head As LinkedLValue = New LinkedLValue 'still useless
+        Dim LinkedLValueTemp As LinkedLValue
         Dim Polygon As List(Of Point) = JustPolygon
         Dim Temp As Point
+        Dim isPolygon As Boolean = True
+
+        If JustPolygon Is Polygons.Last Then
+            isPolygon = False
+        End If
+
         For i = 0 To Polygon.Count - 1
             Temp = Polygon(i)
-            ListRect.Add(New LinkedLValue(Temp))
+
+            LinkedLValueTemp = New LinkedLValue
+            LinkedLValueTemp.NewP(Temp)
+
+            ListRect.Add(LinkedLValueTemp)
             If i = 0 Then
                 Head = ListRect(i)
-                ListRect(i).NextList = Head
+                If isPolygon Then
+                    ListRect(i).NextP = Head
+                    ListRect(i).status = "P"
+                Else
+                    ListRect(i).NextW = Head
+                    ListRect(i).status = "W"
+                End If
             Else
-                ListRect(i - 1).NextList = ListRect(i)
-                ListRect(i).NextList = Head
+                If isPolygon Then
+                    ListRect(i - 1).NextP = ListRect(i)
+                    ListRect(i).NextP = Head
+                    ListRect(i).status = "P"
+                Else
+                    ListRect(i - 1).NextW = ListRect(i)
+                    ListRect(i).NextW = Head
+                    ListRect(i).status = "W"
+                End If
             End If
         Next
 
         Return ListRect
     End Function
-End Class
 
-Public Class LinkedLValue
-    Public Point As Point
-    Public NextList As LinkedLValue = Nothing
 
-    Sub New(e As Point)
-        Me.Point = e
+    Function SetTPoint(A As Point, B As Point, T As Decimal) As Point
+        Dim Result As Point
+
+        Result.X = A.X + (T * (B.X - A.X))
+        Result.Y = A.Y + (T * (B.Y - A.Y))
+
+        Return Result
+    End Function
+
+    Function SetNextPandW(I As List(Of LinkedLValue)) As List(Of LinkedLValue)
+        Dim P As List(Of LinkedLValue) = ListofPolygonsLinkedList.First
+        Dim W As List(Of LinkedLValue) = ListofPolygonsLinkedList.Last
+
+        Dim First As Integer
+        Dim Last As Integer
+
+        If I.Count = 1 Then
+            First = I.First.p.X
+            Last = I.First.p.Y
+
+            I.First.NextP = P(Last)
+            P(First).NextP = I.First
+
+            First = I.First.w.X
+            Last = I.First.w.Y
+
+            I.First.NextW = W(Last)
+            W(First).NextW = I.First
+        Else
+            Dim Index As Integer
+            'set nextp
+            Index = IntersectionExist(I.Last.p, I, "P")
+            If Index >= 0 Then
+                First = I.First.p.X
+                Last = I.First.p.Y
+
+                If I(Index).tp < I.Last.tp Then
+                    I.Last.NextP = P(Last)
+                    I(Index).NextP = I.Last
+                ElseIf I(Index).tp > I.Last.tp Then
+                    I.Last.NextP = I(Index)
+                    P(First).NextP = I.Last
+                End If
+            Else
+                First = I.First.p.X
+                Last = I.First.p.Y
+
+                I.First.NextP = P(Last)
+                P(First).NextP = I.First
+            End If
+            'set nextw
+            Index = IntersectionExist(I.Last.w, I, "W")
+            If Index >= 0 Then
+                First = I.First.w.X
+                Last = I.First.w.Y
+
+                If I(Index).tw < I.Last.tw Then
+                    I.Last.NextW = W(Last)
+                    I(Index).NextW = I.Last
+                ElseIf I(Index).tw > I.Last.tw Then
+                    I.Last.NextW = I(Index)
+                    W(First).NextW = I.Last
+                End If
+            Else
+                First = I.First.w.X
+                Last = I.First.w.Y
+
+                I.Last.NextW = W(Last)
+                W(First).NextW = I.Last
+            End If
+        End If
+
+        ListofPolygonsLinkedList(0) = P
+        ListofPolygonsLinkedList(1) = W
+
+        Return I
+    End Function
+
+    Function IntersectionExist(Point As Point, Intersections As List(Of LinkedLValue), Status As String) As Integer
+        For i = 0 To Intersections.Count - 2
+            If Status = "P" And Intersections(i).p = Point Then
+                Return i
+            ElseIf Status = "W" And Intersections(i).w = Point Then
+                Return i
+            End If
+        Next
+        Return -1
+    End Function
+
+    Sub DrawIntersection()
+        Dim Current As LinkedLValue = Nothing
+
+        For i = 0 To Intersection.Count - 1
+            NewPolygon = New List(Of Point)
+            Current = New LinkedLValue
+            Current = Intersection(i)
+
+            'MsgBox(Current.status)
+            If Current.status = "EN" Then
+                Console.WriteLine(Current.point.ToString)
+                NewPolygon.Add(Current.point)
+
+                Current = Current.NextP
+                Do While Current IsNot Intersection(i)
+                    Console.WriteLine(Current.point.ToString)
+                    NewPolygon.Add(Current.point)
+                    If Current.status = "LEAV" Then
+                        Current = Current.NextW
+                    Else
+                        Current = Current.NextP
+                    End If
+                Loop
+
+                Polygons.Add(NewPolygon)
+                NewPolygon = Nothing
+                Current = Nothing
+            End If
+            NewPolygon = Nothing
+            Current = Nothing
+        Next
     End Sub
 End Class
 
-Public Class LinkedLIntersection
-    Public Point As Point
-    Public NextList As LinkedLValue = Nothing
+Public Class LinkedLValue
+    Public point As Point
+    Public tp As Decimal
+    Public tw As Decimal
+    Public w As Point
+    Public p As Point
+    Public status As String
+    Public NextP As LinkedLValue = Nothing
+    Public NextW As LinkedLValue = Nothing
 
-    Sub New(e As Point)
-        Me.Point = e
+    Sub New()
+        Me.tp = Nothing
+        Me.tw = Nothing
+        Me.w = Nothing
+        Me.p = Nothing
+        Me.status = Nothing
+        Me.NextP = Nothing
+        Me.NextW = Nothing
+    End Sub
+
+    Sub NewI(TP As Decimal, P As Point, TW As Decimal, W As Point, Point As Point, Status As String)
+        Me.tp = TP
+        Me.p = P
+        Me.tw = TW
+        Me.w = W
+        Me.point = Point
+        Me.status = Status
+    End Sub
+
+    Sub NewP(e As Point)
+        Me.point = e
     End Sub
 End Class
