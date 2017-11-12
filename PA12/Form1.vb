@@ -125,6 +125,10 @@ Public Class MainWindow
                 NewPoint = e.Location
                 NewPolygon.Add(e.Location)
                 If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
+                    If ButtonMenu = "SPolygon" Then
+                        listBox1.Items.Clear()
+                        Polygons.Clear()
+                    End If
                     listBox1.Items.Add("Polygon")
                 ElseIf ButtonMenu = "RClipping" Then
                     listBox1.Items.Add("Clipping")
@@ -234,6 +238,12 @@ Public Class MainWindow
         listBox1.Items.Clear()
         Polygons.Clear()
         picCanvas.Image = Nothing
+        NewPolygon = Nothing
+        NewRect = Nothing
+        ListofPolygonsLinkedList.Clear()
+        Intersection.Clear()
+
+
 
         btnDelete.Enabled = False
         btnSave.Enabled = False
@@ -259,11 +269,12 @@ Public Class MainWindow
         Dim bmp As New Bitmap(picCanvas.Width, picCanvas.Height)
         picCanvas.DrawToBitmap(bmp, New Rectangle(0, 0, picCanvas.Width, picCanvas.Height))
         bmp.Save("C:\Users\User\Documents\PA\PA12\output.png", Imaging.ImageFormat.Png)
+        bmp.Save("D:\output.png", Imaging.ImageFormat.Png)
         MsgBox("Saved as Bitmap")
 
         Dim W As IO.StreamWriter
         Dim i As Integer
-        W = New IO.StreamWriter("C:\Users\User\Documents\PA\PA12\test.txt")
+        W = New IO.StreamWriter("D:\test.txt")
 
         For i = 0 To listBox1.Items.Count - 1
             W.WriteLine(listBox1.Items.Item(i))
@@ -373,7 +384,7 @@ Public Class MainWindow
                     If TisAcc(Tis(Polygon(A), Polygon(B), Rect(S), NW)) And TisAcc(Tis(Rect(S), Rect(T), Polygon(A), NP)) Then
                         TempPoint = SetTPoint(Polygon(A), Polygon(B), Tis(Polygon(A), Polygon(B), Rect(S), NW))
                         Status = "LEAV"
-
+                        MsgBox("Leav")
                         TempLinkedLIntersection = New LinkedLValue
                         TempLinkedLIntersection.NewI(Tis(Polygon(A), Polygon(B), Rect(S), NW),
                                                      ToPoint(A, B),
