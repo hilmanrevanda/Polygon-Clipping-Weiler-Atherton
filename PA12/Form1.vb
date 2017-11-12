@@ -118,6 +118,10 @@ Public Class MainWindow
                 NewPoint = e.Location
                 NewPolygon.Add(e.Location)
                 If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
+                    If ButtonMenu = "SPolygon" Then
+                        listBox1.Items.Clear()
+                        Polygons.Clear()
+                    End If
                     listBox1.Items.Add("Polygon")
                 ElseIf ButtonMenu = "RClipping" Then
                     listBox1.Items.Add("Clipping")
@@ -251,7 +255,7 @@ Public Class MainWindow
         'Save as BMP-file
         Dim bmp As New Bitmap(picCanvas.Width, picCanvas.Height)
         picCanvas.DrawToBitmap(bmp, New Rectangle(0, 0, picCanvas.Width, picCanvas.Height))
-        bmp.Save("C:\output.png", Imaging.ImageFormat.Png)
+        bmp.Save("D:\output.png", Imaging.ImageFormat.Png)
         MsgBox("Saved as Bitmap")
 
         Dim W As IO.StreamWriter
