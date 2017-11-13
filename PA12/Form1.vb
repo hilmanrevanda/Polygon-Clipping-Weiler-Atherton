@@ -268,13 +268,12 @@ Public Class MainWindow
         'Save as BMP-file
         Dim bmp As New Bitmap(picCanvas.Width, picCanvas.Height)
         picCanvas.DrawToBitmap(bmp, New Rectangle(0, 0, picCanvas.Width, picCanvas.Height))
-        bmp.Save("C:\Users\User\Documents\PA\PA12\output.png", Imaging.ImageFormat.Png)
-        bmp.Save("D:\output.png", Imaging.ImageFormat.Png)
+        bmp.Save("C:\output.png", Imaging.ImageFormat.Png)
         MsgBox("Saved as Bitmap")
 
         Dim W As IO.StreamWriter
         Dim i As Integer
-        W = New IO.StreamWriter("D:\test.txt")
+        W = New IO.StreamWriter("C:\test.txt")
 
         For i = 0 To listBox1.Items.Count - 1
             W.WriteLine(listBox1.Items.Item(i))
