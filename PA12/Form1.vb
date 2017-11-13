@@ -175,6 +175,7 @@ Public Class MainWindow
         For Each Clipping As List(Of Point) In Clippings
 
             e.Graphics.DrawPolygon(Pens.Red, Clipping.ToArray())
+            listBox1.Items.Add(Clipping.ToString())
 
         Next Clipping
 
@@ -239,8 +240,10 @@ Public Class MainWindow
         picCanvas.Image = Nothing
         NewPolygon = Nothing
         NewRect = Nothing
+        Intersection = Nothing
         ListofPolygonsLinkedList.Clear()
-        Intersection.Clear()
+
+        Clippings.Clear()
 
 
 
