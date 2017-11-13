@@ -43,19 +43,15 @@ Public Class MainWindow
                     If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
                         If (NewPolygon.Count > 2) Then
                             'NewPolygon store coordinate
-                            If IsPolygonConvex(NewPolygon) Then
-                                Polygons.Add(NewPolygon)
-                                'Remove current polygon coordinate
-                                NewPolygon = Nothing
+                            Polygons.Add(NewPolygon)
+                            'Remove current polygon coordinate
+                            NewPolygon = Nothing
 
-                                btnClipRectangular.Enabled = True
-                                btnClipPolygon.Enabled = True
-                                btnDelete.Enabled = True
-                                btnSave.Enabled = True
-                                btnRefresh.Enabled = True
-                            Else
-                                MsgBox("not convex polygon")
-                            End If
+                            btnClipRectangular.Enabled = True
+                            btnClipPolygon.Enabled = True
+                            btnDelete.Enabled = True
+                            btnSave.Enabled = True
+                            btnRefresh.Enabled = True
                         End If
                     ElseIf ButtonMenu = "RClipping" Then
                         'test
@@ -398,62 +394,53 @@ Public Class MainWindow
         Next
 
         If Polygon.Count * Rect.Count = C Then
-            MsgBox("Didalamsemua")
             Clippings.Add(Polygons.First)
-        End If
+        Else
+            Intersection = New List(Of LinkedLValue)
+            Intersection = TempIntersection
 
-        Intersection = New List(Of LinkedLValue)
-        Intersection = TempIntersection
+            SetNext()
 
-        'MsgBox(Intersection.Count)
-
-        'NewPolygon = New List(Of Point)
-
-        'For i = 0 To Intersection.Count - 1
-        'NewPolygon.Add(Intersection(i).point)
-        'Next
-
-        'Polygons = Nothing
-        'Polygons = New List(Of List(Of Point))
-
-        'Polygons.Add(NewPolygon)
-
-        'NewPolygon = Nothing
-
-        SetNext()
-
-        'DrawIntersection()
-        NewPolygon = New List(Of Point)
-
-        Dim CurrentPos As LinkedLValue = New LinkedLValue
-        Dim Start As LinkedLValue = New LinkedLValue
-        For i = 0 To Intersection.Count - 1
+            'DrawIntersection()
             NewPolygon = New List(Of Point)
-            If Intersection(i).status Is EN Then
-                CurrentPos = Intersection(i)
-                Start = Intersection(i)
 
-                NewPolygon.Add(CurrentPos.point)
+            Dim CurrentPos As LinkedLValue = New LinkedLValue
+            Dim Start As LinkedLValue = New LinkedLValue
+            For i = 0 To Intersection.Count - 1
+                NewPolygon = New List(Of Point)
+                If Intersection(i).status Is EN Then
+                    CurrentPos = Intersection(i)
+                    Start = Intersection(i)
 
-                CurrentPos = CurrentPos.NextP
+                    NewPolygon.Add(CurrentPos.point)
 
-                NewPolygon.Add(CurrentPos.point)
+                    CurrentPos = CurrentPos.NextP
 
-                Do While CurrentPos IsNot Start
-                    If CurrentPos.status Is LEAV Then
-                        CurrentPos = CurrentPos.NextW
-                        NewPolygon.Add(CurrentPos.point)
-                    ElseIf CurrentPos.status Is EN Then
-                        CurrentPos = CurrentPos.NextP
-                        NewPolygon.Add(CurrentPos.point)
-                    End If
-                Loop
+                    NewPolygon.Add(CurrentPos.point)
 
-                Clippings.Add(NewPolygon)
-                NewPolygon = Nothing
-                Exit For
-            End If
-        Next
+                    Do While CurrentPos IsNot Start
+                        If CurrentPos.status Is LEAV Then
+                            CurrentPos = CurrentPos.NextW
+                            NewPolygon.Add(CurrentPos.point)
+                            Do Until CurrentPos.status Is EN
+                                CurrentPos = CurrentPos.NextW
+                                NewPolygon.Add(CurrentPos.point)
+                            Loop
+                        Else
+                            CurrentPos = CurrentPos.NextP
+                            NewPolygon.Add(CurrentPos.point)
+                            Do Until CurrentPos.status Is LEAV
+                                CurrentPos = CurrentPos.NextP
+                                NewPolygon.Add(CurrentPos.point)
+                            Loop
+                        End If
+                    Loop
+
+                    Clippings.Add(NewPolygon)
+                    NewPolygon = Nothing
+                End If
+            Next
+        End If
     End Function
 
     'Fungsi ini menentukan inside atau outside dari saru point saja (Point S)
@@ -599,8 +586,8 @@ Public Class MainWindow
             Inter = IntersectionExistP(Point)
 
             If Not (Inter.Count = 0) Then
-                Start = A
-                Endd = B
+                Start = Intersection(Inter.First).p.X
+                Endd = Intersection(Inter.First).p.Y
             End If
 
             If Inter.Count = 1 Then
@@ -632,8 +619,8 @@ Public Class MainWindow
             Inter = IntersectionExistW(Point)
 
             If Not (Inter.Count = 0) Then
-                Start = A
-                Endd = B
+                Start = Intersection(Inter.First).w.X
+                Endd = Intersection(Inter.First).w.Y
             End If
 
             If Inter.Count = 1 Then
