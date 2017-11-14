@@ -175,9 +175,17 @@ Public Class MainWindow
         For Each Clipping As List(Of Point) In Clippings
 
             e.Graphics.DrawPolygon(Pens.Red, Clipping.ToArray())
-            listBox1.Items.Add(Clipping.ToString())
+            listBox1.Items.Add("Clipped Points")
+            For i = 0 To Clipping.Count - 1
+                listBox1.Items.Add(Clipping(i).ToString)
+            Next
+
+
+            'listBox1.Items.Add(Clipping.ToString())
 
         Next Clipping
+
+
 
         ' Draw the new polygon.
         If (NewPolygon IsNot Nothing) Then
@@ -270,12 +278,12 @@ Public Class MainWindow
         'Save as BMP-file
         Dim bmp As New Bitmap(picCanvas.Width, picCanvas.Height)
         picCanvas.DrawToBitmap(bmp, New Rectangle(0, 0, picCanvas.Width, picCanvas.Height))
-        bmp.Save("C:\output.png", Imaging.ImageFormat.Png)
+        bmp.Save("C:\Users\User\Desktop\output.png", Imaging.ImageFormat.Png)
         MsgBox("Saved as Bitmap")
 
         Dim W As IO.StreamWriter
         Dim i As Integer
-        W = New IO.StreamWriter("C:\test.txt")
+        W = New IO.StreamWriter("C:\Users\User\Desktop\test.txt")
 
         For i = 0 To listBox1.Items.Count - 1
             W.WriteLine(listBox1.Items.Item(i))
@@ -398,6 +406,7 @@ Public Class MainWindow
 
         If Polygon.Count * Rect.Count = C Then
             Clippings.Add(Polygons.First)
+            listBox1.Items.Add(Polygon.First)
         Else
             Intersection = New List(Of LinkedLValue)
             Intersection = TempIntersection
