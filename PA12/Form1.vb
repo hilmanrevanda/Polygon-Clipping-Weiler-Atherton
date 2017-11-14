@@ -71,7 +71,7 @@ Public Class MainWindow
 
 
                                 'exe clippingpoint function
-                                ClippingPoint(Polygons(0), Polygons(1))
+                                Doclip()
                             End If
                         End If
                     End If
@@ -115,7 +115,7 @@ Public Class MainWindow
 
 
                             'exe clippingpoint function
-                            ClippingPoint(Polygons(0), Polygons(1))
+                            Doclip()
 
                         Else
                             NewPolygon.Add(e.Location)
@@ -137,6 +137,11 @@ Public Class MainWindow
         picCanvas.Invalidate()
     End Sub
 
+    Sub Doclip()
+        For j = 0 To Polygons.Count - 2
+            ClippingPoint(j, Polygons.Count - 1)
+        Next j
+    End Sub
     ' Move the next point in the new polygon.
     Private Sub picCanvas_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseMove
         If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Or ButtonMenu = "RClipping" Or ButtonMenu = "FClipping" Then
@@ -252,6 +257,7 @@ Public Class MainWindow
         NewPolygon = Nothing
         NewRect = Nothing
         Intersection = Nothing
+        ListofPolygonsLinkedList = New List(Of List(Of LinkedLValue))
         ListofPolygonsLinkedList.Clear()
 
         Clippings.Clear()
@@ -345,7 +351,10 @@ Public Class MainWindow
         Return (Ax * By) - (Ay * Bx)
     End Function
 
-    Function ClippingPoint(Polygon As List(Of Point), Rect As List(Of Point)) As Point
+    Function ClippingPoint(X As Integer, Z As Integer) As Point
+        Dim Polygon = Polygons(X)
+        Dim Rect = Polygons(Z)
+
         Dim C As Integer
         C = 0
         Dim B As Integer
@@ -415,9 +424,10 @@ Public Class MainWindow
             Intersection = New List(Of LinkedLValue)
             Intersection = TempIntersection
 
-            SetNext()
+            'TENTUIN NEXT
+            SetNext(PolygonstoLinkedList(X), PolygonstoLinkedList(Z))
 
-            'DrawIntersection()
+            'DrawIntersection START
             NewPolygon = New List(Of Point)
 
             Dim CurrentPos As LinkedLValue = New LinkedLValue
@@ -442,13 +452,15 @@ Public Class MainWindow
                                 CurrentPos = CurrentPos.NextW
                                 NewPolygon.Add(CurrentPos.point)
                             Loop
-                        Else
+                        ElseIf CurrentPos.status Is EN Or CurrentPos.status Is "P" Or CurrentPos.status Is "W" Then
                             CurrentPos = CurrentPos.NextP
                             NewPolygon.Add(CurrentPos.point)
                             Do Until CurrentPos.status Is LEAV
                                 CurrentPos = CurrentPos.NextP
                                 NewPolygon.Add(CurrentPos.point)
                             Loop
+                        Else
+                            Exit Do
                         End If
                     Loop
 
@@ -457,9 +469,13 @@ Public Class MainWindow
                 End If
             Next
         End If
+        'DrawIntersection END
 
         Tolistbox = True
 
+        ListofPolygonsLinkedList = Nothing
+
+        Intersection = Nothing
     End Function
 
     'Fungsi ini menentukan inside atau outside dari saru point saja (Point S)
@@ -585,9 +601,7 @@ Public Class MainWindow
         Return Result
     End Function
 
-    Sub SetNext()
-        Dim Polygon = ListofPolygonsLinkedList(0)
-        Dim Window = ListofPolygonsLinkedList(1)
+    Sub SetNext(Polygon As List(Of LinkedLValue), Window As List(Of LinkedLValue))
 
         Dim B As Integer
         Dim Point As Point
@@ -604,7 +618,7 @@ Public Class MainWindow
 
             Inter = IntersectionExistP(Point)
 
-            If Not (Inter.Count = 0) Then
+            If Inter.Count > 0 Then
                 Start = Intersection(Inter.First).p.X
                 Endd = Intersection(Inter.First).p.Y
             End If
@@ -614,9 +628,7 @@ Public Class MainWindow
                 Intersection(Inter.First).NextP = Polygon(Endd)
             ElseIf Inter.Count > 1 Then
                 Inter = SortlistP(Inter)
-                For Each i In Inter
-                    Console.WriteLine(Intersection(i).tp)
-                Next
+
                 Polygon(Start).NextP = Intersection(Inter.First)
 
                 For i = 0 To Inter.Count - 1
@@ -637,7 +649,7 @@ Public Class MainWindow
 
             Inter = IntersectionExistW(Point)
 
-            If Not (Inter.Count = 0) Then
+            If Inter.Count > 0 Then
                 Start = Intersection(Inter.First).w.X
                 Endd = Intersection(Inter.First).w.Y
             End If
@@ -658,7 +670,7 @@ Public Class MainWindow
 
                 Intersection(Inter.Last).NextW = Window(Endd)
             Else
-                Window(Start).NextW = Window(Endd)
+                'Window(Start).NextW = Window(Endd)
             End If
         Next
     End Sub
