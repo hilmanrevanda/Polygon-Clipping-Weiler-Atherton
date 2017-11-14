@@ -43,14 +43,15 @@ Partial Class MainWindow
         Me.gbClipping.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'picCanvas
         '
         Me.picCanvas.BackColor = System.Drawing.Color.White
-        Me.picCanvas.Location = New System.Drawing.Point(113, 69)
+        Me.picCanvas.Location = New System.Drawing.Point(137, 69)
         Me.picCanvas.Name = "picCanvas"
-        Me.picCanvas.Size = New System.Drawing.Size(521, 342)
+        Me.picCanvas.Size = New System.Drawing.Size(497, 342)
         Me.picCanvas.TabIndex = 0
         Me.picCanvas.TabStop = False
         '
@@ -175,9 +176,9 @@ Partial Class MainWindow
         Me.listBox1.BackColor = System.Drawing.Color.MediumTurquoise
         Me.listBox1.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.listBox1.FormattingEnabled = True
-        Me.listBox1.Location = New System.Drawing.Point(12, 69)
+        Me.listBox1.Location = New System.Drawing.Point(12, 106)
         Me.listBox1.Name = "listBox1"
-        Me.listBox1.Size = New System.Drawing.Size(68, 342)
+        Me.listBox1.Size = New System.Drawing.Size(92, 342)
         Me.listBox1.TabIndex = 9
         '
         'GroupBox1
@@ -220,9 +221,10 @@ Partial Class MainWindow
         'Panel2
         '
         Me.Panel2.BackColor = System.Drawing.Color.LightGray
+        Me.Panel2.Controls.Add(Me.listBox1)
         Me.Panel2.Location = New System.Drawing.Point(0, -37)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(95, 483)
+        Me.Panel2.Size = New System.Drawing.Size(120, 483)
         Me.Panel2.TabIndex = 13
         '
         'MainWindow
@@ -233,7 +235,6 @@ Partial Class MainWindow
         Me.ClientSize = New System.Drawing.Size(763, 444)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.listBox1)
         Me.Controls.Add(Me.gbClipping)
         Me.Controls.Add(Me.gbDraw)
         Me.Controls.Add(Me.picCanvas)
@@ -247,6 +248,7 @@ Partial Class MainWindow
         Me.GroupBox1.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
