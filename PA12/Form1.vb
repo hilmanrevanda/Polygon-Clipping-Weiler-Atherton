@@ -8,6 +8,8 @@ Public Class MainWindow
     Private Polygons As New List(Of List(Of Point))()
 
     Private Clippings As New List(Of List(Of Point))()
+
+    Private SelectedPolygon As List(Of List(Of Point)) = Nothing
     ' Points for the new polygon.
     ' Ambil nilai NewPolygon pada line 24 sebelum di hapus untuk record coordinate setiap poligon guna pengaplikasian ke rumus nantinya, atau ada cara lain?
     Private NewPolygon As List(Of Point) = Nothing
@@ -19,6 +21,8 @@ Public Class MainWindow
     Private Intersection As List(Of LinkedLValue) = Nothing
 
     Private Clockwise As Boolean = Nothing
+
+    Private Tolistbox As Boolean = Nothing
 
     ' The current mouse position while drawing a new polygon.
     Private NewPoint As Point
@@ -52,6 +56,8 @@ Public Class MainWindow
                             btnDelete.Enabled = True
                             btnSave.Enabled = True
                             btnRefresh.Enabled = True
+
+                            Tolistbox = True
                         End If
                     ElseIf ButtonMenu = "FClipping" Then
                         If (NewPolygon.Count > 2) Then
@@ -86,19 +92,13 @@ Public Class MainWindow
                             C.Y = A.Y
 
                             NewPolygon.Add(C)
-                            'Add the point into list box
-                            listBox1.Items.Add(C)
 
                             NewPolygon.Add(B)
-                            'Add the point into list box
-                            listBox1.Items.Add(B)
 
                             C.X = A.X
                             C.Y = B.Y
 
                             NewPolygon.Add(C)
-                            'Add the point into list box
-                            listBox1.Items.Add(C)
 
                             'NewPolygon store coordinaten coordinate
                             Polygons.Add(NewPolygon)
@@ -119,8 +119,6 @@ Public Class MainWindow
 
                         Else
                             NewPolygon.Add(e.Location)
-                            'Add the point into list box
-                            listBox1.Items.Add(NewPoint)
                         End If
                     End If
                 End If
@@ -129,29 +127,14 @@ Public Class MainWindow
                 NewPolygon = New List(Of Point)()
                 NewPoint = e.Location
                 NewPolygon.Add(e.Location)
-                If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Then
-                    If ButtonMenu = "SPolygon" Then
-                        listBox1.Items.Clear()
-                        Polygons.Clear()
-                    End If
-                    listBox1.Items.Add("Polygon")
-                ElseIf ButtonMenu = "RClipping" Then
-                    listBox1.Items.Add("Clipping")
-                End If
-                'MsgBox(NewPolygon.Count & " " & NewPoint.X & ", " & NewPoint.Y)
 
                 If (ButtonMenu = "RClipping") Then TempPoint = NewPoint
-
-                listBox1.Items.Add(NewPoint)
 
 
             End If
         End If
-
-
         ' Redraw.
         picCanvas.Invalidate()
-
     End Sub
 
     ' Move the next point in the new polygon.
@@ -178,20 +161,34 @@ Public Class MainWindow
 
         Next polygon
 
+        If Tolistbox Then
+            listBox1.Items.Clear()
+            i = 0
+            For Each Polygon In Polygons
+                listBox1.Items.Add("Polygon " & i)
+                i = i + 1
+            Next Polygon
+
+            ListBox3.Items.Clear()
+            i = 0
+            For Each Clip In Clippings
+                ListBox3.Items.Add("Clipped Polygon " & i)
+                i = i + 1
+            Next Clip
+            Tolistbox = False
+        End If
+
         For Each Clipping As List(Of Point) In Clippings
 
             e.Graphics.DrawPolygon(Pens.Red, Clipping.ToArray())
-            listBox1.Items.Add("Clipped Points")
-            For i = 0 To Clipping.Count - 1
-                listBox1.Items.Add(Clipping(i).ToString)
-            Next
-
-
-            'listBox1.Items.Add(Clipping.ToString())
 
         Next Clipping
 
-
+        If SelectedPolygon IsNot Nothing Then
+            For Each selected In SelectedPolygon
+                e.Graphics.DrawPolygon(Pens.Yellow, selected.ToArray())
+            Next selected
+        End If
 
         ' Draw the new polygon.
         If (NewPolygon IsNot Nothing) Then
@@ -271,13 +268,15 @@ Public Class MainWindow
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         ButtonMenu = "Delete"
 
-        If (listBox1.SelectedItem Is "Polygon") Then
-            listBox1.Items.Remove(listBox1.SelectedItem)
-
+        Tolistbox = True
+        If listBox1.SelectedIndex >= 0 Then
+            Polygons.RemoveAt(listBox1.SelectedIndex)
+            SelectedPolygon.Clear()
+            ListBox2.Items.Clear()
+            picCanvas.Invalidate()
         Else
             MsgBox("Please select a polygon!")
         End If
-
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
@@ -412,7 +411,6 @@ Public Class MainWindow
 
         If Polygon.Count * Rect.Count = C Then
             Clippings.Add(Polygons.First)
-            listBox1.Items.Add(Polygon.First)
         Else
             Intersection = New List(Of LinkedLValue)
             Intersection = TempIntersection
@@ -459,6 +457,9 @@ Public Class MainWindow
                 End If
             Next
         End If
+
+        Tolistbox = True
+
     End Function
 
     'Fungsi ini menentukan inside atau outside dari saru point saja (Point S)
@@ -766,7 +767,22 @@ Public Class MainWindow
         Next
     End Sub
 
-
+    Private Sub listBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles listBox1.SelectedIndexChanged
+        If listBox1.SelectedIndex >= 0 Then
+            ListBox2.Items.Clear()
+            For Each poly In Polygons(listBox1.SelectedIndex)
+                ListBox2.Items.Add(poly.ToString)
+                SelectedPolygon = Nothing
+                SelectedPolygon = New List(Of List(Of Point))()
+                SelectedPolygon.Add(Polygons(listBox1.SelectedIndex))
+                picCanvas.Invalidate()
+            Next poly
+        Else
+            ListBox2.Items.Clear()
+            SelectedPolygon = Nothing
+            picCanvas.Invalidate()
+        End If
+    End Sub
 End Class
 
 Public Class LinkedLValue

@@ -38,6 +38,8 @@ Partial Class MainWindow
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.ListBox2 = New System.Windows.Forms.ListBox()
+        Me.ListBox3 = New System.Windows.Forms.ListBox()
         CType(Me.picCanvas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbDraw.SuspendLayout()
         Me.gbClipping.SuspendLayout()
@@ -176,9 +178,9 @@ Partial Class MainWindow
         Me.listBox1.BackColor = System.Drawing.Color.MediumTurquoise
         Me.listBox1.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.listBox1.FormattingEnabled = True
-        Me.listBox1.Location = New System.Drawing.Point(12, 106)
+        Me.listBox1.Location = New System.Drawing.Point(12, 93)
         Me.listBox1.Name = "listBox1"
-        Me.listBox1.Size = New System.Drawing.Size(92, 342)
+        Me.listBox1.Size = New System.Drawing.Size(92, 82)
         Me.listBox1.TabIndex = 9
         '
         'GroupBox1
@@ -221,11 +223,33 @@ Partial Class MainWindow
         'Panel2
         '
         Me.Panel2.BackColor = System.Drawing.Color.LightGray
+        Me.Panel2.Controls.Add(Me.ListBox3)
+        Me.Panel2.Controls.Add(Me.ListBox2)
         Me.Panel2.Controls.Add(Me.listBox1)
         Me.Panel2.Location = New System.Drawing.Point(0, -37)
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(120, 483)
         Me.Panel2.TabIndex = 13
+        '
+        'ListBox2
+        '
+        Me.ListBox2.BackColor = System.Drawing.Color.MediumTurquoise
+        Me.ListBox2.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.ListBox2.FormattingEnabled = True
+        Me.ListBox2.Location = New System.Drawing.Point(12, 181)
+        Me.ListBox2.Name = "ListBox2"
+        Me.ListBox2.Size = New System.Drawing.Size(92, 173)
+        Me.ListBox2.TabIndex = 10
+        '
+        'ListBox3
+        '
+        Me.ListBox3.BackColor = System.Drawing.Color.LightCoral
+        Me.ListBox3.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.ListBox3.FormattingEnabled = True
+        Me.ListBox3.Location = New System.Drawing.Point(12, 359)
+        Me.ListBox3.Name = "ListBox3"
+        Me.ListBox3.Size = New System.Drawing.Size(92, 108)
+        Me.ListBox3.TabIndex = 11
         '
         'MainWindow
         '
@@ -269,4 +293,6 @@ Partial Class MainWindow
     Friend WithEvents Label1 As Label
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Panel2 As Panel
+    Friend WithEvents ListBox2 As ListBox
+    Friend WithEvents ListBox3 As ListBox
 End Class
