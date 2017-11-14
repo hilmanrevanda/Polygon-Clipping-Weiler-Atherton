@@ -31,7 +31,7 @@ Public Class MainWindow
 
     ' Start or continue drawing a new polygon.
     Private Sub picCanvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseDown
-        If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Or ButtonMenu = "RClipping" Then
+        If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Or ButtonMenu = "RClipping" Or ButtonMenu = "FClipping" Then
             ' See if we are already drawing a polygon.
             If (NewPolygon IsNot Nothing) Then
 
@@ -53,8 +53,21 @@ Public Class MainWindow
                             btnSave.Enabled = True
                             btnRefresh.Enabled = True
                         End If
-                    ElseIf ButtonMenu = "RClipping" Then
-                        'test
+                    ElseIf ButtonMenu = "FClipping" Then
+                        If (NewPolygon.Count > 2) Then
+                            If IsPolygonConvex(NewPolygon) Then
+                                Polygons.Add(NewPolygon)
+                                NewPolygon = Nothing
+
+                                'masukin semuanya jadi linked list
+                                ListofPolygonsLinkedList = New List(Of List(Of LinkedLValue))
+                                ListofPolygonsLinkedList = PolygonstoLinkedList()
+
+
+                                'exe clippingpoint function
+                                ClippingPoint(Polygons(0), Polygons(1))
+                            End If
+                        End If
                     End If
                 Else
                     ' Add a point to this polygon.
@@ -75,14 +88,10 @@ Public Class MainWindow
                             NewPolygon.Add(C)
                             'Add the point into list box
                             listBox1.Items.Add(C)
-                            i = 0
-                            i += 1
 
                             NewPolygon.Add(B)
                             'Add the point into list box
                             listBox1.Items.Add(B)
-                            i = 0
-                            i += 1
 
                             C.X = A.X
                             C.Y = B.Y
@@ -90,8 +99,7 @@ Public Class MainWindow
                             NewPolygon.Add(C)
                             'Add the point into list box
                             listBox1.Items.Add(C)
-                            i = 0
-                            i += 1
+
                             'NewPolygon store coordinaten coordinate
                             Polygons.Add(NewPolygon)
                             NewPolygon = Nothing
@@ -113,8 +121,6 @@ Public Class MainWindow
                             NewPolygon.Add(e.Location)
                             'Add the point into list box
                             listBox1.Items.Add(NewPoint)
-                            i = 0
-                            i += 1
                         End If
                     End If
                 End If
@@ -150,7 +156,7 @@ Public Class MainWindow
 
     ' Move the next point in the new polygon.
     Private Sub picCanvas_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picCanvas.MouseMove
-        If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Or ButtonMenu = "RClipping" Then
+        If ButtonMenu = "SPolygon" Or ButtonMenu = "MPolygon" Or ButtonMenu = "RClipping" Or ButtonMenu = "FClipping" Then
             If (NewPolygon Is Nothing) Then Exit Sub
             NewPoint = e.Location
             picCanvas.Invalidate()
