@@ -74,6 +74,11 @@ Public Class MainWindow
 
                                 'exe clippingpoint function
                                 Doclip()
+                            Else
+                                NewPolygon = Nothing
+                                btnClipPolygon.Enabled = True
+                                btnClipRectangular.Enabled = True
+                                MsgBox("Polygon must convex!")
                             End If
                         End If
                     End If
@@ -281,7 +286,12 @@ Public Class MainWindow
         Tolistbox = True
         If listBox1.SelectedIndex >= 0 Then
             Polygons.RemoveAt(listBox1.SelectedIndex)
-            SelectedPolygon.Clear()
+            SelectedPolygon = Nothing
+            ListBox2.Items.Clear()
+            picCanvas.Invalidate()
+        ElseIf listBox3.SelectedIndex >= 0 Then
+            Clippings.RemoveAt(ListBox3.SelectedIndex)
+            SelectedPolygon = Nothing
             ListBox2.Items.Clear()
             picCanvas.Invalidate()
         Else
@@ -805,7 +815,20 @@ Public Class MainWindow
     End Sub
 
     Private Sub ListBox3_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox3.SelectedIndexChanged
-
+        If ListBox3.SelectedIndex >= 0 Then
+            ListBox2.Items.Clear()
+            For Each poly In Clippings(ListBox3.SelectedIndex)
+                ListBox2.Items.Add(poly.ToString)
+                SelectedPolygon = Nothing
+                SelectedPolygon = New List(Of List(Of Point))()
+                SelectedPolygon.Add(Clippings(ListBox3.SelectedIndex))
+                picCanvas.Invalidate()
+            Next poly
+        Else
+            ListBox2.Items.Clear()
+            SelectedPolygon = Nothing
+            picCanvas.Invalidate()
+        End If
     End Sub
 
     Private Sub ListBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox2.SelectedIndexChanged
