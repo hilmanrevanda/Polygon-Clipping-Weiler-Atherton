@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class MainWindow
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class MainWindow
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.picCanvas = New System.Windows.Forms.PictureBox()
         Me.btnExit = New System.Windows.Forms.Button()
@@ -38,19 +38,22 @@ Partial Class MainWindow
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.ListBox2 = New System.Windows.Forms.ListBox()
+        Me.ListBox3 = New System.Windows.Forms.ListBox()
         CType(Me.picCanvas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbDraw.SuspendLayout()
         Me.gbClipping.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'picCanvas
         '
         Me.picCanvas.BackColor = System.Drawing.Color.White
-        Me.picCanvas.Location = New System.Drawing.Point(113, 69)
+        Me.picCanvas.Location = New System.Drawing.Point(137, 69)
         Me.picCanvas.Name = "picCanvas"
-        Me.picCanvas.Size = New System.Drawing.Size(521, 342)
+        Me.picCanvas.Size = New System.Drawing.Size(497, 342)
         Me.picCanvas.TabIndex = 0
         Me.picCanvas.TabStop = False
         '
@@ -175,9 +178,9 @@ Partial Class MainWindow
         Me.listBox1.BackColor = System.Drawing.Color.MediumTurquoise
         Me.listBox1.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.listBox1.FormattingEnabled = True
-        Me.listBox1.Location = New System.Drawing.Point(12, 69)
+        Me.listBox1.Location = New System.Drawing.Point(12, 93)
         Me.listBox1.Name = "listBox1"
-        Me.listBox1.Size = New System.Drawing.Size(68, 342)
+        Me.listBox1.Size = New System.Drawing.Size(92, 82)
         Me.listBox1.TabIndex = 9
         '
         'GroupBox1
@@ -197,11 +200,11 @@ Partial Class MainWindow
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("News706 BT", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.White
         Me.Label1.Location = New System.Drawing.Point(261, 11)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(247, 22)
+        Me.Label1.Size = New System.Drawing.Size(242, 24)
         Me.Label1.TabIndex = 11
         Me.Label1.Text = "Hil-Nik-Cha Drawing App"
         '
@@ -220,10 +223,33 @@ Partial Class MainWindow
         'Panel2
         '
         Me.Panel2.BackColor = System.Drawing.Color.LightGray
+        Me.Panel2.Controls.Add(Me.ListBox3)
+        Me.Panel2.Controls.Add(Me.ListBox2)
+        Me.Panel2.Controls.Add(Me.listBox1)
         Me.Panel2.Location = New System.Drawing.Point(0, -37)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(95, 483)
+        Me.Panel2.Size = New System.Drawing.Size(120, 483)
         Me.Panel2.TabIndex = 13
+        '
+        'ListBox2
+        '
+        Me.ListBox2.BackColor = System.Drawing.Color.MediumTurquoise
+        Me.ListBox2.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.ListBox2.FormattingEnabled = True
+        Me.ListBox2.Location = New System.Drawing.Point(12, 181)
+        Me.ListBox2.Name = "ListBox2"
+        Me.ListBox2.Size = New System.Drawing.Size(92, 173)
+        Me.ListBox2.TabIndex = 10
+        '
+        'ListBox3
+        '
+        Me.ListBox3.BackColor = System.Drawing.Color.LightCoral
+        Me.ListBox3.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.ListBox3.FormattingEnabled = True
+        Me.ListBox3.Location = New System.Drawing.Point(12, 359)
+        Me.ListBox3.Name = "ListBox3"
+        Me.ListBox3.Size = New System.Drawing.Size(92, 108)
+        Me.ListBox3.TabIndex = 11
         '
         'MainWindow
         '
@@ -233,7 +259,6 @@ Partial Class MainWindow
         Me.ClientSize = New System.Drawing.Size(763, 444)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.listBox1)
         Me.Controls.Add(Me.gbClipping)
         Me.Controls.Add(Me.gbDraw)
         Me.Controls.Add(Me.picCanvas)
@@ -247,6 +272,7 @@ Partial Class MainWindow
         Me.GroupBox1.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -267,4 +293,6 @@ Partial Class MainWindow
     Friend WithEvents Label1 As Label
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Panel2 As Panel
+    Friend WithEvents ListBox2 As ListBox
+    Friend WithEvents ListBox3 As ListBox
 End Class
