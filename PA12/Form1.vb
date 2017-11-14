@@ -69,6 +69,8 @@ Public Class MainWindow
                                 ListofPolygonsLinkedList = New List(Of List(Of LinkedLValue))
                                 ListofPolygonsLinkedList = PolygonstoLinkedList()
 
+                                btnClipPolygon.Enabled = False
+                                btnClipRectangular.Enabled = False
 
                                 'exe clippingpoint function
                                 ClippingPoint(Polygons(0), Polygons(1))
@@ -173,6 +175,7 @@ Public Class MainWindow
             i = 0
             For Each Clip In Clippings
                 ListBox3.Items.Add("Clipped Polygon " & i)
+
                 i = i + 1
             Next Clip
             Tolistbox = False
@@ -237,6 +240,7 @@ Public Class MainWindow
 
     Private Sub btnClipRectangular_Click(sender As Object, e As EventArgs) Handles btnClipRectangular.Click
         ButtonMenu = "RClipping"
+
     End Sub
 
     Private Sub btnClipPolygon_Click(sender As Object, e As EventArgs) Handles btnClipPolygon.Click
@@ -247,12 +251,14 @@ Public Class MainWindow
         ButtonMenu = "Refresh"
         'Clear list box, polygons and canvas
         listBox1.Items.Clear()
+        ListBox2.Items.Clear()
+        ListBox3.Items.Clear()
         Polygons.Clear()
         picCanvas.Image = Nothing
         NewPolygon = Nothing
         NewRect = Nothing
         Intersection = Nothing
-        ListofPolygonsLinkedList.Clear()
+        ListofPolygonsLinkedList = Nothing
 
         Clippings.Clear()
 
@@ -287,12 +293,16 @@ Public Class MainWindow
         MsgBox("Saved as Bitmap")
 
         Dim W As IO.StreamWriter
-        Dim i As Integer
+        Dim j As Integer
         W = New IO.StreamWriter("C:\Users\User\Desktop\test.txt")
 
         For i = 0 To listBox1.Items.Count - 1
             W.WriteLine(listBox1.Items.Item(i))
         Next
+        For i = 0 To ListBox3.Items.Count - 1
+            W.WriteLine(ListBox3.Items.Item(i))
+        Next
+
         W.Close()
         MsgBox("Saved as text")
     End Sub
@@ -782,6 +792,14 @@ Public Class MainWindow
             SelectedPolygon = Nothing
             picCanvas.Invalidate()
         End If
+    End Sub
+
+    Private Sub ListBox3_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox3.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub ListBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox2.SelectedIndexChanged
+
     End Sub
 End Class
 
