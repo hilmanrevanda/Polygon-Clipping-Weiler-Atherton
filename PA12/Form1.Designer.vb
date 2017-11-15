@@ -38,8 +38,8 @@ Partial Class MainWindow
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.ListBox2 = New System.Windows.Forms.ListBox()
         Me.ListBox3 = New System.Windows.Forms.ListBox()
+        Me.ListBox2 = New System.Windows.Forms.ListBox()
         CType(Me.picCanvas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbDraw.SuspendLayout()
         Me.gbClipping.SuspendLayout()
@@ -231,16 +231,6 @@ Partial Class MainWindow
         Me.Panel2.Size = New System.Drawing.Size(120, 483)
         Me.Panel2.TabIndex = 13
         '
-        'ListBox2
-        '
-        Me.ListBox2.BackColor = System.Drawing.Color.MediumTurquoise
-        Me.ListBox2.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.ListBox2.FormattingEnabled = True
-        Me.ListBox2.Location = New System.Drawing.Point(12, 181)
-        Me.ListBox2.Name = "ListBox2"
-        Me.ListBox2.Size = New System.Drawing.Size(92, 173)
-        Me.ListBox2.TabIndex = 10
-        '
         'ListBox3
         '
         Me.ListBox3.BackColor = System.Drawing.Color.LightCoral
@@ -250,6 +240,16 @@ Partial Class MainWindow
         Me.ListBox3.Name = "ListBox3"
         Me.ListBox3.Size = New System.Drawing.Size(92, 108)
         Me.ListBox3.TabIndex = 11
+        '
+        'ListBox2
+        '
+        Me.ListBox2.BackColor = System.Drawing.Color.MediumTurquoise
+        Me.ListBox2.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.ListBox2.FormattingEnabled = True
+        Me.ListBox2.Location = New System.Drawing.Point(12, 181)
+        Me.ListBox2.Name = "ListBox2"
+        Me.ListBox2.Size = New System.Drawing.Size(92, 173)
+        Me.ListBox2.TabIndex = 10
         '
         'MainWindow
         '
